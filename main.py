@@ -1,5 +1,5 @@
 from bokeh.plotting import figure, show, output_file
-from bokeh.models import ColumnDataSource, HoverTool, NumeralTickFormatter
+from bokeh.models import ColumnDataSource, HoverTool, NumeralTickFormatter, Span, CustomJS
 from bokeh.layouts import layout
 from bokeh.io import curdoc
 from bokeh.palettes import Category10, Category20
@@ -41,6 +41,13 @@ colors = Category20[4]
 colors_label = ['Volvo', 'Toyota', 'Nissan', 'Volkswagen']
 p.varea_stack(stackers=['VOLVO', 'TOYOTA', 'NISSAN', 'VOLKSWAGEN'],
               x='Year', color=colors, source=source, legend_label=colors_label)
+
+vline = Span(location=0, dimension = 'height',line_color='black', line_width =2 , line_dash = [10,5])
+p.add_layout(vline)
+p.js_on_event('mousemove', CustomJS(args=dict(vline=vline), code="""
+    const x = cb_obj.x;
+    vline.location = x;
+"""))
 
 hover = HoverTool()
 hover.tooltips = [("Year", "@Year"), ("Volvo",
