@@ -20,7 +20,7 @@ def get_sales_data():
     total_toyota_sales = toyota_sales.sum(axis=0).values
     total_nissan_sales = nissan_sales.sum(axis=0).values
     total_volkswagen_sales = volkswagen_sales.sum(axis=0).values
-    return total_volvo_sales, total_toyota_sales, total_nissan_sales, total_volkswagen_sales 
+    return total_volvo_sales[::-1], total_toyota_sales[::-1], total_nissan_sales[::-1], total_volkswagen_sales [::-1]
 
 def main_page_setup():
     #extract the data
