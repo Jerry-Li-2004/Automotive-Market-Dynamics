@@ -1,6 +1,5 @@
-from bokeh.models import HoverTool, Span, CustomJS
-from data_extraction import get_all_sales_data
-
+from bokeh.models import HoverTool, Span, CustomJS, Slider
+from bokeh.layouts import column
 
 def vertical_line_with_cursor(main_page):  # show vertical lines with cursor:
     vline = Span(location=0, dimension='height',
@@ -21,36 +20,20 @@ def info_with_cursor(main_page):  # show information when hover
     main_page.add_tools(hover)
     return
 
-import numpy as np
 
-from bokeh.layouts import column, row
-from bokeh.models import ColumnDataSource, CustomJS, Slider
-from bokeh.plotting import figure, show
-
-
-
-def year_slider():
-    x = np.linspace(0, 10, 500)
-    y = x
-    source = ColumnDataSource(data=dict(x=x, y=y))
-    plot = figure(y_range=(-10, 10),x_range=(0,10), width=400, height=400)
-    plot.line('x', 'y', source=source, line_width=3, line_alpha=0.6)
-    
-
-    time_slider = Slider(start=2001,end=2021,value=2001,step=5,title="Year")
-    callback = CustomJS(args = dict(plot=plot,time_slider=time_slider),code = """
+def year_slider(main_page):
+    time_slider = Slider(start=2001,end=2015,value=2001,step=1,title="Year")
+    callback = CustomJS(args = dict(main_page=main_page,time_slider=time_slider),code = """
         const year = time_slider.value;
-        const start = (year - 2001) / 20 * 10;  // Calculate start of x_range
-        const end = start + 10;  // Calculate end of x_range
-        plot.x_range.start = start;
-        plot.x_range.end = end; 
+        const start = year;                 // Calculate start of x_range
+        const end = start + 5;              // Calculate end of x_range
+        main_page.x_range.start = start;
+        main_page.x_range.end = end; 
                         """)
 
-    time_slider.js_on_change('value',callback)
-    show(row(plot, column(time_slider)))
-
-year_slider()
-
+    time_slider.js_on_change('value', callback)
+    main_page_layout = column(main_page, time_slider)
+    return main_page_layout
 
 
 # x = np.linspace(0, 10, 500)
