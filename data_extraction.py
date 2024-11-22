@@ -48,12 +48,8 @@ def get_sales_data():
 
 def main_page_setup():
     # extract the data
-    total_volvo_sales, total_toyota_sales, total_nissan_sales, total_volkswagen_sales = get_sales_data()
     sales_data = get_all_sales_data()
     years = np.arange(2001, 2021)
-
-    # data = pd.DataFrame({'Year': years, 'VOLVO': total_volvo_sales,
-    #                     'TOYOTA': total_toyota_sales, 'NISSAN': total_nissan_sales, 'VOLKSWAGEN': total_volkswagen_sales})
 
     data = pd.DataFrame({'Year': years})
     for brand in sales_data['Top_10_Brands']:
@@ -64,11 +60,6 @@ def main_page_setup():
 
     main_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',
                        y_axis_label='Sales', sizing_mode='stretch_both', width=800, height=400)
-
-    # colors = Category20[4]
-    # colors_label = ['Volvo', 'Toyota', 'Nissan', 'Volkswagen']
-    # main_page.varea_stack(stackers=['VOLVO', 'TOYOTA', 'NISSAN', 'VOLKSWAGEN'],
-    #                       x='Year', color=colors, source=source, legend_label=colors_label)
 
     colors = Category20[len(sales_data['Top_10_Brands'])]
     main_page.varea_stack(stackers=sales_data['Top_10_Brands'],
