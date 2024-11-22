@@ -24,6 +24,8 @@ def get_all_sales_data():
 
     data["Top_10_Brands"] = [t[0] for t in data['Total_Sales']]
 
+    data['Top_10_Brands'] = data['Top_10_Brands'][::-1] #higher sale on upper position
+
     return data
 
 
