@@ -1,4 +1,4 @@
-from bokeh.models import HoverTool, Span, CustomJS, Slider
+from bokeh.models import HoverTool, Span, CustomJS, Slider, CheckboxGroup
 from bokeh.layouts import column
 
 def vertical_line_with_cursor(main_page):  # show vertical lines with cursor:
@@ -32,5 +32,28 @@ def year_slider(main_page):
                         """)
 
     time_slider.js_on_change('value', callback)
-    main_page_layout = column(main_page, time_slider)
-    return main_page_layout
+    return time_slider
+
+def brand_filter(main_page):
+    # Create a CheckboxGroup for brand selection
+    brands = [item.label['value'] for item in main_page.legend.items]
+    checkbox_group = CheckboxGroup(labels=brands, active=list(range(len(brands))))
+
+    # CustomJS to update visibility based on checkbox selection
+    # checkbox_callback = CustomJS(args=dict(main_page=main_page, checkbox_group=checkbox_group), code="""
+    #     const active = checkbox_group.active;
+    #     const legend_items = main_page.legend.items;
+
+    #     for (let i = 0; i < legend_items.length; i++) {
+    #         const item = legend_items[i];
+    #         const isActive = active.includes(i);
+    #         item.renderers.forEach(renderer => {
+    #             renderer.visible = isActive;
+    #         });
+    #     }
+    # """)
+
+    # checkbox_group.js_on_change('active', checkbox_callback)
+
+    # Add the checkbox group to the layout
+    return checkbox_group
