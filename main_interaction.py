@@ -1,7 +1,7 @@
 from bokeh.models import HoverTool, Span, CustomJS, Slider, TapTool, Button, CheckboxGroup
 from bokeh.layouts import column, row, Spacer
 
-from data_extraction import global_lines
+from data_extraction import global_lines, get_sales_forecast_data
 
 
 def vertical_line_with_cursor(main_page):  # show vertical lines with cursor:
@@ -63,10 +63,12 @@ def brand_filter(main_page):
     # Add the checkbox group to the layout
     return checkbox_group
 
+
 def model_selector(inner_page):
     from bokeh.models import ColumnDataSource, Select, CustomJS
     brands = [item.label['value'] for item in inner_page.legend.items]
-    selector = Select(title="Car Model", value = "Toyota", options = list(brands.keys()))
+    selector = Select(title="Car Model", value="Toyota",
+                      options=list(brands.keys()))
 
     # select_callback = CustomJS(args=dict(source=source, data=data), code="""
     #     // Update the source data with the selected model
@@ -75,7 +77,6 @@ def model_selector(inner_page):
     #     source.change.emit();
     # """)
     # selector.js_on_change('value', select_callback)
-
 
 
 def test():
@@ -98,7 +99,8 @@ def test():
     line = p.line('x', 'y', source=source, line_width=2, color='blue')
 
     # Create a Select widget
-    select = Select(title="Car Model:", value="Toyota", options=list(data.keys()))
+    select = Select(title="Car Model:", value="Toyota",
+                    options=list(data.keys()))
 
     # Add a callback to update the plot when the selection changes
     select_callback = CustomJS(args=dict(source=source, data=data), code="""
@@ -114,4 +116,4 @@ def test():
     show(layout)
 
 
-# test() 
+# test()
