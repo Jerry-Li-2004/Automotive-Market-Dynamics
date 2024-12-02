@@ -3,6 +3,7 @@ from bokeh.layouts import column, row, Spacer
 
 from data_extraction import global_lines
 
+
 def vertical_line_with_cursor(main_page):  # show vertical lines with cursor:
     vline = Span(location=0, dimension='height',
                  line_color='black', line_width=2, line_dash=[10, 5])
@@ -39,6 +40,7 @@ def year_slider(main_page):
                           Spacer(width=90))
     # main_page_layout = column(main_page, centered_slider, Spacer(height=20))
     return centered_slider
+
 
 def brand_filter(main_page):
     # Create a CheckboxGroup for brand selection
