@@ -41,8 +41,13 @@ from bokeh.plotting import figure, show, output_file
 from bokeh.models import ColumnDataSource
 
 # Define the data
-categories = ['Price', 'Gas_emission', 'Fuel_type',
-              'Engine_size', 'Gearbox', 'Top_speed']
+categories = ['Price', 'Oil Price', 'Gas_emission',
+              'MPG', 'Engine_power', 'Top_speed']
+
+# oil cost: petrol, diesel, electric different costs
+# all categorical data are normalized
+
+# Average_mpg fuel econonmy
 values = [4, 3, 2, 5, 4, 3]
 
 # Number of variables
@@ -61,11 +66,11 @@ y = [v * np.sin(a) for v, a in zip(values, angles)]
 
 # Create a Bokeh figure
 p = figure(title="Circular Parallel Axis Plot", match_aspect=True,
-           tools="", x_axis_type=None, y_axis_type=None)
+           tools="", x_axis_type=None, y_axis_type=None, width=500, height=300)
 p.grid.grid_line_color = None
 
 # Add the circular plot
-p.line(x, y, line_width=2)
+p.line(x, y, line_width=5)
 p.circle(x, y, size=8)
 
 # Add category labels

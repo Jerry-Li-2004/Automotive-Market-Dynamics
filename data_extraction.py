@@ -7,6 +7,7 @@ from bokeh.palettes import Category20
 
 global_lines = []
 
+
 def get_all_sales_data():
     data = {'Total_Sales': []}
 
@@ -30,17 +31,49 @@ def get_all_sales_data():
 
     return data
 
-def get_brand_sales_data(brand):#extract tip 10 sales of specific brand
+
+def get_sales_forecast_data():
+    data = {'Total_Sales': []}
+
+    sales_df = pd.read_csv("prediction_analysis/Projected_Sales_data.csv")
+    columns = list(sales_df.columns)
+    df_segment0 = columns[0:3]
+    df_segment1 = columns[3:23]
+    df_segment2 = columns[23:29]
+    reorder_sequence = df_segment0 + df_segment2[::-1] + df_segment1
+    sales_df = sales_df[reorder_sequence]
+    sales_data_df = sales_df.drop(columns=['Maker', 'Genmodel', 'Genmodel_ID'])
+
+    # all car brand name
+    car_brand_names = sales_df['Maker'].drop_duplicates().to_list()
+    for brand in car_brand_names:
+        data[brand] = sales_data_df[sales_df['Maker']
+                                    == brand].sum(axis=0).values[::-1]
+        data['Total_Sales'].append((brand, sum(data[brand])))
+
+    data['Total_Sales'] = sorted(
+        data['Total_Sales'], key=lambda n: n[1])[::-1][0:10]
+
+    data["Top_10_Brands"] = [t[0] for t in data['Total_Sales']]
+
+    # higher sale on upper position
+    data['Top_10_Brands'] = data['Top_10_Brands'][::-1]
+
+    return data
+
+
+def get_brand_sales_data(brand):  # extract tip 10 sales of specific brand
     sales_df = pd.read_csv("dataset/Sales_table.csv")
     sales_df = sales_df.drop(columns=['Genmodel_ID'])
 
     brand_sales = sales_df[sales_df['Maker'] == brand]
     year_columns = brand_sales.columns[2:]
     brand_sales['Total_Sales'] = brand_sales[year_columns].sum(axis=1)
-    
-    brand_sales = brand_sales.nlargest(10,'Total_Sales')
+
+    brand_sales = brand_sales.nlargest(10, 'Total_Sales')
 
     return brand_sales
+
 
 def get_sales_data():
 
@@ -62,8 +95,10 @@ def get_sales_data():
 def main_page_setup():
     global global_lines
     # extract the data
-    sales_data = get_all_sales_data()
-    years = np.arange(2001, 2021)
+    # sales_data = get_all_sales_data()
+    # years = np.arange(2001, 2021)
+    sales_data = get_sales_forecast_data()
+    years = np.arange(2001, 2027)
 
     data = pd.DataFrame({'Year': years})
     for brand in sales_data['Top_10_Brands']:
@@ -90,8 +125,12 @@ def main_page_setup():
 def filter_line_page_setup():
     global global_lines
     # extract the data
-    sales_data = get_all_sales_data()
-    years = np.arange(2001, 2021)
+    # sales_data = get_all_sales_data()
+    # years = np.arange(2001, 2021)
+
+    # sales forecasting
+    sales_data = get_sales_forecast_data()
+    years = np.arange(2001, 2027)
 
     data = pd.DataFrame({'Year': years})
     for brand in sales_data['Top_10_Brands']:
@@ -105,9 +144,9 @@ def filter_line_page_setup():
     colors = Category20[len(sales_data['Top_10_Brands'])]
 
     for brand, color in zip(sales_data['Top_10_Brands'], colors):
-        line = main_page.line(x='Year', y=brand, line_width = 4, color=color, source=source, legend_label=brand)
+        line = main_page.line(x='Year', y=brand, line_width=4,
+                              color=color, source=source, legend_label=brand)
         global_lines.append(line)
-
 
     main_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     main_page.title.text_font_size = '20pt'
@@ -116,11 +155,16 @@ def filter_line_page_setup():
     # main_page.legend.click_policy="hide"
 
     return main_page
-    
+
+
 def inner_page_setup():
     # extract the data
-    sales_data = get_all_sales_data()
-    years = np.arange(2001, 2021)
+    # sales_data = get_all_sales_data()
+    # years = np.arange(2001, 2021)
+
+    # sales forecasting
+    sales_data = get_sales_forecast_data()
+    years = np.arange(2001, 2027)
 
     data = pd.DataFrame({'Year': years})
     for brand in sales_data['Top_10_Brands']:
@@ -134,7 +178,8 @@ def inner_page_setup():
     colors = Category20[len(sales_data['Top_10_Brands'])]
 
     for brand, color in zip(sales_data['Top_10_Brands'], colors):
-        line = main_page.line(x='Year', y=brand, line_width = 4, color=color, source=source, legend_label=brand)
+        line = main_page.line(x='Year', y=brand, line_width=4,
+                              color=color, source=source, legend_label=brand)
 
     main_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     main_page.title.text_font_size = '20pt'
