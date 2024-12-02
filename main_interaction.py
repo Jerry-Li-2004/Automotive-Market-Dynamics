@@ -1,4 +1,4 @@
-from bokeh.models import HoverTool, Span, CustomJS, Slider
+from bokeh.models import HoverTool, Span, CustomJS, Slider, TapTool, Button
 from bokeh.layouts import column, row, Spacer
 
 
@@ -34,6 +34,29 @@ def year_slider(main_page):
                         """)
 
     time_slider.js_on_change('value', callback)
-    centered_slider = row(Spacer(width=90), time_slider, Spacer(width=90))
-    main_page_layout = column(main_page, centered_slider, Spacer(height=20))
+    centered_slider = row(Spacer(width=90), time_slider,
+                          Spacer(width=90))
+    # main_page_layout = column(main_page, centered_slider, Spacer(height=20))
+    return centered_slider
+
+
+def button_frame(main_page):
+    button1 = Button(label="Button 1", button_type="success",
+                     width=100, height=30)
+    button1_callback = CustomJS(code="""
+        alert('Button 1 clicked');
+    """)
+    button1.js_on_event('button_click', button1_callback)
+
+    button2 = Button(label="Button 2", button_type="warning",
+                     width=100, height=30)
+    button2_callback = CustomJS(code="""
+        alert('Button 2 clicked');
+    """)
+    button2.js_on_event('button_click', button2_callback)
+
+    button_column = column(button1, Spacer(height=10),
+                           button2, Spacer(height=20), width=10)
+
+    main_page_layout = row(main_page, button_column, Spacer(width=20))
     return main_page_layout

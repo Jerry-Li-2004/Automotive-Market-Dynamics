@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from bokeh.models import ColumnDataSource, NumeralTickFormatter
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, TapTool
 from bokeh.plotting import figure
 
 from bokeh.palettes import Category20
@@ -24,7 +24,8 @@ def get_all_sales_data():
 
     data["Top_10_Brands"] = [t[0] for t in data['Total_Sales']]
 
-    data['Top_10_Brands'] = data['Top_10_Brands'][::-1] #higher sale on upper position
+    # higher sale on upper position
+    data['Top_10_Brands'] = data['Top_10_Brands'][::-1]
 
     return data
 
@@ -55,7 +56,13 @@ def main_page_setup():
     for brand in sales_data['Top_10_Brands']:
         data[brand] = sales_data[brand]
 
-    # print(data)
+    # source_data = {'Year': years}
+
+    # for filtering
+    # for brand in sales_data['Top_10_Brands']:
+    #     source_data[brand] = sales_data[brand]
+    #     source_data['brand'] = [brand] * len(years)
+
     source = ColumnDataSource(data)
 
     main_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',
