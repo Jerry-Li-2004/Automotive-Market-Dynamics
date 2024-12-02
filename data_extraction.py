@@ -30,6 +30,17 @@ def get_all_sales_data():
 
     return data
 
+def get_brand_sales_data(brand):#extract tip 10 sales of specific brand
+    sales_df = pd.read_csv("dataset/Sales_table.csv")
+    sales_df = sales_df.drop(columns=['Genmodel_ID'])
+
+    brand_sales = sales_df[sales_df['Maker'] == brand]
+    year_columns = brand_sales.columns[2:]
+    brand_sales['Total_Sales'] = brand_sales[year_columns].sum(axis=1)
+    
+    brand_sales = brand_sales.nlargest(10,'Total_Sales')
+
+    return brand_sales
 
 def get_sales_data():
 

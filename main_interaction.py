@@ -62,3 +62,56 @@ def brand_filter(main_page):
 
     # Add the checkbox group to the layout
     return checkbox_group
+
+def model_selector(inner_page):
+    from bokeh.models import ColumnDataSource, Select, CustomJS
+    brands = [item.label['value'] for item in inner_page.legend.items]
+    selector = Select(title="Car Model", value = "Toyota", options = list(brands.keys()))
+
+    # select_callback = CustomJS(args=dict(source=source, data=data), code="""
+    #     // Update the source data with the selected model
+    #     const selected_model = cb_obj.value;
+    #     source.data = data[selected_model];
+    #     source.change.emit();
+    # """)
+    # selector.js_on_change('value', select_callback)
+
+
+
+def test():
+    from bokeh.models import ColumnDataSource, Select, CustomJS
+    from bokeh.plotting import figure, show
+    from bokeh.layouts import column
+
+    # Sample data for multiple car models
+    data = {
+        'Toyota': {'x': [1, 2, 3, 4], 'y': [4, 7, 6, 5]},
+        'Honda': {'x': [1, 2, 3, 4], 'y': [1, 3, 5, 7]},
+        'BMW': {'x': [1, 2, 3, 4], 'y': [7, 6, 5, 4]},
+    }
+
+    # Create a ColumnDataSource and initialize with one model's data
+    source = ColumnDataSource(data=data['Toyota'])
+
+    # Create a plot
+    p = figure(title="Car Models", width=600, height=400)
+    line = p.line('x', 'y', source=source, line_width=2, color='blue')
+
+    # Create a Select widget
+    select = Select(title="Car Model:", value="Toyota", options=list(data.keys()))
+
+    # Add a callback to update the plot when the selection changes
+    select_callback = CustomJS(args=dict(source=source, data=data), code="""
+        // Update the source data with the selected model
+        const selected_model = cb_obj.value;
+        source.data = data[selected_model];
+        source.change.emit();
+    """)
+    select.js_on_change('value', select_callback)
+
+    # Layout
+    layout = column(select, p)
+    show(layout)
+
+
+test() 
