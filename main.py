@@ -3,16 +3,21 @@ from bokeh.layouts import layout, column, row, Spacer
 from bokeh.io import curdoc
 from bokeh.models import Button, CustomJS, TapTool, Div
 
-from data_extraction import main_page_setup
-from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, button_frame
+from data_extraction import main_page_setup, filter_line_page_setup
+from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
 
 
 def main():
     main_page = main_page_setup()
-    inner_page = Div(text="<h1>Inner Layer Visualization 2</h1>")
-    # interaction
+    filter_line_page  = filter_line_page_setup()
+    # main page interaction
     vertical_line_with_cursor(main_page)  # show vertical lines with cursor
     info_with_cursor(main_page)  # show information when hover
+
+    # inner page interaction
+    vertical_line_with_cursor(filter_line_page)  # show vertical lines with cursor
+    info_with_cursor(filter_line_page)  # show information when hover
+
 
     # buttons for page switching
     button1 = Button(label="Inner Layer", button_type="success",
@@ -24,13 +29,14 @@ def main():
     # page setup
     # 1. main page setup
     main_page = column(main_page,
-                       row(year_slider(main_page), button1), Spacer(height=20))
+                       row(year_slider(main_page),  button1), Spacer(height=20))
 
     # 2. inner layer setup
-    inner_page = column(inner_page, button2)
+    filter_line_page = column(filter_line_page , 
+                       row(year_slider(filter_line_page ), brand_filter(filter_line_page ),  button2), Spacer(height=20))
 
     # button1_callback
-    button1_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, button1=button1, button2=button2), code="""
+    button1_callback = CustomJS(args=dict(main_page=main_page, inner_page=filter_line_page, button1=button1, button2=button2), code="""
         main_page.visible = false;
         button1.visible = false;
         button2.visible = true;
@@ -38,7 +44,7 @@ def main():
     """)
 
     # button1_callback
-    button2_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, button1=button1, button2=button2), code="""
+    button2_callback = CustomJS(args=dict(main_page=main_page, inner_page=filter_line_page, button1=button1, button2=button2), code="""
         main_page.visible = true;
         button1.visible = true;
         button2.visible = false;
@@ -49,9 +55,9 @@ def main():
     button2.js_on_click(button2_callback)
 
     main_page.visible = True
-    inner_page.visible = False
+    filter_line_page.visible = False
     # show the plot
-    final_layout = layout([[main_page, inner_page]],
+    final_layout = layout([[main_page, filter_line_page]],
                           sizing_mode='stretch_both')
     curdoc().add_root(final_layout)
 
