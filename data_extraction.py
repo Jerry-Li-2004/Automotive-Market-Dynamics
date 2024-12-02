@@ -5,6 +5,7 @@ from bokeh.plotting import figure
 
 from bokeh.palettes import Category20
 
+global_lines = []
 
 def get_all_sales_data():
     data = {'Total_Sales': []}
@@ -47,6 +48,7 @@ def get_sales_data():
 
 
 def main_page_setup():
+    global global_lines
     # extract the data
     sales_data = get_all_sales_data()
     years = np.arange(2001, 2021)
@@ -66,12 +68,14 @@ def main_page_setup():
     #                       x='Year', color=colors, source=source, legend_label=sales_data['Top_10_Brands'])
 
     for brand, color in zip(sales_data['Top_10_Brands'], colors):
-        main_page.line(x='Year', y=brand, line_width = 4, color=color, source=source, legend_label=brand)
+        line = main_page.line(x='Year', y=brand, line_width = 4, color=color, source=source, legend_label=brand)
+        global_lines.append(line)
+
 
     main_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     main_page.title.text_font_size = '20pt'
     main_page.legend.location = "top_left"
     main_page.legend.orientation = "horizontal"
-    main_page.legend.click_policy="hide"
+    # main_page.legend.click_policy="hide"
 
     return main_page
