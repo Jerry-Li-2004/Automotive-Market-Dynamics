@@ -36,19 +36,21 @@
 # # Show the layout
 # show(layout)
 
+from bokeh.plotting import figure
+from bokeh.layouts import gridplot
+from bokeh.io import show, output_file
 import numpy as np
 from bokeh.plotting import figure, show, output_file
 from bokeh.models import ColumnDataSource
 
 # Define the data
-categories = ['Price', 'Oil Price', 'Gas_emission',
-              'MPG', 'Engine_power', 'Top_speed']
+categories = ['sales', 'price', 'MPG', 'engine_power', 'Top_speed']
 
 # oil cost: petrol, diesel, electric different costs
 # all categorical data are normalized
 
 # Average_mpg fuel econonmy
-values = [4, 3, 2, 5, 4, 3]
+values = [4, 3, 2, 5, 3]
 
 # Number of variables
 num_vars = len(categories)
@@ -89,3 +91,77 @@ for angle in angles[:-1]:  # Exclude the last angle to avoid duplicate axis
 # Show the plot
 output_file("circular_parallel_axis_plot.html")
 show(p)
+
+# # grid plot examples
+
+# # Create some sample data
+# x = [1, 2, 3, 4, 5]
+# y1 = [6, 7, 2, 4, 5]
+# y2 = [1, 4, 3, 2, 6]
+# y3 = [2, 3, 5, 7, 6]
+# y4 = [4, 6, 7, 2, 3]
+
+# # Create four different plots
+# plot1 = figure(title="Line Plot")
+# plot1.line(x, y1)
+
+# plot2 = figure(title="Scatter Plot")
+# plot2.scatter(x, y2)
+
+# plot3 = figure(title="Circle Plot")
+# plot3.circle(x, y3)
+
+# plot4 = figure(title="Triangle Plot")
+# plot4.triangle(x, y4)
+
+# # Arrange the plots in a grid layout
+# grid = gridplot([[plot1, plot2], [plot3, plot4]])
+
+# # Output the visualization to an HTML file
+# output_file("dashboard.html")
+
+# # Show the dashboard
+# show(grid)
+
+
+# frame setup
+# from bokeh.io import show, output_file
+# from bokeh.layouts import row
+# from bokeh.models import ColumnDataSource, ImageURL
+# from bokeh.plotting import figure
+# import os
+
+# # Sample data for the plot
+# x = [1, 2, 3, 4, 5]
+# y = [6, 7, 2, 4, 5]
+
+# # Create a plot
+# plot = figure(title="Line Plot", width=400, height=400)
+# plot.line(x, y)
+
+# # Local image paths (replace with your own image paths)
+# image_paths = ["image/audi_logo.jpg", "image/ferrari_logo.jpg"]
+
+# # Convert local paths to URLs
+# # image_urls = ["file://" + os.path.abspath(path) for path in image_paths]
+
+# # Create a ColumnDataSource with image URLs
+# source = ColumnDataSource(
+#     data=dict(url=image_paths, x=[0.5, 0.5], y=[0.75, 0.25]))
+
+# # Create a figure for images
+# image_plot = figure(x_range=(0, 1), y_range=(0, 1), width=800, height=400)
+# image_plot.image_url(url="url", x="x", y="y", w=0.9, h=0.8, source=source)
+
+# # Hide grid lines and axes for the image plot
+# image_plot.grid.visible = False
+# image_plot.axis.visible = False
+
+# # Arrange the plot and images in a layout
+# layout = row(plot, image_plot)
+
+# # Output the visualization to an HTML file
+# output_file("dashboard_with_local_images_outside.html")
+
+# # Show the dashboard
+# show(layout)
