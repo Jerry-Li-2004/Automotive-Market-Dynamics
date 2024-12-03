@@ -1,8 +1,8 @@
 from bokeh.plotting import show, output_file
 from bokeh.layouts import layout, column, row, Spacer
 from bokeh.io import curdoc
-from bokeh.models import Button, CustomJS, TapTool, Div
-
+from bokeh.models import Button, CustomJS, Tap, Div, BuiltinIcon, SVGIcon
+from bokeh import events
 from data_extraction import main_page_setup, filter_line_page_setup, inner_page_setup
 from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
 
@@ -32,24 +32,26 @@ def main():
     filter_but = Button(label="filter Layer", button_type="success",
                         width=100, height=30)
 
-    ferarri_logo_html = """
-<a href="https://google.com" target="_blank">
-    <img src="image/ferrari_logo.jpg" width="90" height="50">
-</a>
-"""
+    audi_button = Button(label="Audi", button_type="success",
+                         width=100, height=30)
 
-    audi_logo_html = """
-<a href="https://google.com" target="_blank">
-    <img src="image/audi_logo.jpg" width="90" height="65">
-</a>
-"""
+    # audi_logo_html = """
+    # <div id="audi_logo" style="text-align: right;">
+    #     <img src="image/audi_logo.jpg" alt="Logo" width="100" height="80" style="cursor: pointer;">
+    # </div>
+    # """
+    # audi_logo = Div(text=audi_logo_html)
 
-    ferarri_logo = Div(text=ferarri_logo_html)
-    audi_logo = Div(text=audi_logo_html)
     # page setup
     # 1. main page setup
-    main_page = column(main_page,
-                       row(year_slider(main_page), filter_but, inner_but, ferarri_logo, audi_logo), Spacer(height=20))
+    main_page = row(
+        # Ensure the main page stretches
+        column(main_page,
+               row(year_slider(main_page), filter_but, inner_but),
+               Spacer(height=20), sizing_mode='stretch_both'),
+        # Fix the width of the logo column
+        column(Spacer(height=20), audi_button, width=200)
+    )
 
     # 2. filter layer setup
     filter_line_page = column(filter_line_page,
@@ -72,7 +74,7 @@ def main():
     inner_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but), code="""
         main_page.visible = false;
         main.visible = true;
-        inner_page.visible = true;      
+        inner_page.visible = true;
         inner.visible = false;
         filter_page.visible = false;
         filter.visible = true;
@@ -81,7 +83,7 @@ def main():
     filter_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=filter_but, main=main_but, filter=filter_but), code="""
         main_page.visible = false;
         main.visible = true;
-        inner_page.visible = false;      
+        inner_page.visible = false;
         inner.visible = true;
         filter_page.visible = true;
         filter.visible = false;
@@ -91,11 +93,14 @@ def main():
     inner_but.js_on_click(inner_but_callback)
     filter_but.js_on_click(filter_but_callback)
 
+    # inner layer for specific car brand
+    audi_button.js_on_event(events.ButtonClick, inner_but_callback)
+
     main_page.visible = True
     filter_line_page.visible = False
     inner_page.visible = False
     # show the plot
-    final_layout = layout([[main_page, inner_page, filter_line_page]],
+    final_layout = layout([main_page, inner_page, filter_line_page],
                           sizing_mode='stretch_both')
     curdoc().add_root(final_layout)
 
