@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from bokeh.models import ColumnDataSource, NumeralTickFormatter, TapTool, Span
 from bokeh.plotting import figure
+from bokeh.plotting import show
 
 from bokeh.palettes import Category20
 
@@ -65,15 +66,19 @@ def get_sales_forecast_data():
 def get_brand_sales_data(brand):  # extract tip 10 sales of specific brand
     sales_df = pd.read_csv("dataset/Sales_table.csv")
     sales_df = sales_df.drop(columns=['Genmodel_ID'])
+    sales_df['Genmodel'] = sales_df['Genmodel'].str.replace('HONDA ', '')
 
     brand_sales = sales_df[sales_df['Maker'] == brand]
     year_columns = brand_sales.columns[2:]
     brand_sales['Total_Sales'] = brand_sales[year_columns].sum(axis=1)
 
     brand_sales = brand_sales.nlargest(10, 'Total_Sales')
+ 
+    # print(brand_sales['Genmodel'])
 
     return brand_sales
 
+get_brand_sales_data('HONDA')
 
 def get_sales_data():
 
@@ -164,35 +169,38 @@ def filter_line_page_setup():
 
     return main_page
 
-
 def inner_page_setup():
     # extract the data
-    # sales_data = get_all_sales_data()
-    # years = np.arange(2001, 2021)
+    sales_data = get_brand_sales_data('HONDA')
+    years = np.arange(2001, 2021)
 
-    # sales forecasting
-    sales_data = get_sales_forecast_data()
-    years = np.arange(2001, 2027)
+    print(sales_data)
 
     data = pd.DataFrame({'Year': years})
-    for brand in sales_data['Top_10_Brands']:
-        data[brand] = sales_data[brand]
+    for model in sales_data['Genmodel']:
+        # print(model[6:])
+        model_row = sales_data.loc[sales_data['Genmodel'] == model]
+        sales_values = model_row.iloc[0, 2:-1].values  # Assuming the sales data starts from the 3rd column to the second last column
+        data[model] = sales_values
+    # print(data)
 
     source = ColumnDataSource(data)
 
-    main_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',
-                       y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
+    inner_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
 
-    colors = Category20[len(sales_data['Top_10_Brands'])]
+    colors = Category20[len(sales_data['Genmodel'])]
 
-    for brand, color in zip(sales_data['Top_10_Brands'], colors):
-        line = main_page.line(x='Year', y=brand, line_width=4,
-                              color=color, source=source, legend_label=brand)
+    for model, color in zip(sales_data['Genmodel'], colors):
+        line = inner_page.line(x='Year', y=model, line_width = 4, color=color, source=source, legend_label=model)
+        # inner_page.add_layout(line)
+    inner_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
+    inner_page.title.text_font_size = '20pt'
+    inner_page.legend.location = "top_left"
+    inner_page.legend.orientation = "horizontal"
+    # inner_page.legend.click_policy="hide"
 
-    main_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
-    main_page.title.text_font_size = '20pt'
-    main_page.legend.location = "top_left"
-    main_page.legend.orientation = "horizontal"
-    # main_page.legend.click_policy="hide"
+    # show(inner_page)
+    # return None
+    return inner_page
 
-    return main_page
+# inner_page_setup()
