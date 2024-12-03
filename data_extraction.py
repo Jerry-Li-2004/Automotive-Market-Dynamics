@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from bokeh.models import ColumnDataSource, NumeralTickFormatter, TapTool
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, TapTool, Span
 from bokeh.plotting import figure
 
 from bokeh.palettes import Category20
@@ -113,6 +113,10 @@ def main_page_setup():
     main_page.varea_stack(stackers=sales_data['Top_10_Brands'],
                           x='Year', color=colors, source=source, legend_label=sales_data['Top_10_Brands'])
 
+    vline = Span(location=2020, dimension='height',
+                 line_color='Blue', line_width=2)
+    main_page.add_layout(vline)
+
     main_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     main_page.title.text_font_size = '20pt'
     main_page.legend.location = "top_left"
@@ -147,6 +151,10 @@ def filter_line_page_setup():
         line = main_page.line(x='Year', y=brand, line_width=4,
                               color=color, source=source, legend_label=brand)
         global_lines.append(line)
+
+    vline = Span(location=2020, dimension='height',
+                 line_color='Blue', line_width=2)
+    main_page.add_layout(vline)
 
     main_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     main_page.title.text_font_size = '20pt'
