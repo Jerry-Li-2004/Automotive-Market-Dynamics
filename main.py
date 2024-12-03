@@ -3,8 +3,11 @@ from bokeh.layouts import layout, column, row, Spacer
 from bokeh.io import curdoc
 from bokeh.models import Button, CustomJS, Tap, Div, BuiltinIcon, SVGIcon
 from bokeh import events
+
+
 from data_extraction import main_page_setup, filter_line_page_setup, inner_page_setup
 from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
+from inner_interaction import model_selector
 
 
 def main():
@@ -59,7 +62,7 @@ def main():
 
     # 3. inner layer setup
     inner_page = column(inner_page,
-                        row(main_but, filter_but))
+                        row(main_but, filter_but, model_selector(inner_page)))
 
     # main but_callback
     main_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but), code="""

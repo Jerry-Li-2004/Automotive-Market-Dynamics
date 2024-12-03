@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
-from bokeh.models import ColumnDataSource, NumeralTickFormatter, TapTool, Span
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, Span
 from bokeh.plotting import figure
-from bokeh.plotting import show
 
 from bokeh.palettes import Category20
 
-global_lines = []
+filter_lines = []
+model_lines = []
 
 
 def get_all_sales_data():
@@ -66,7 +66,7 @@ def get_sales_forecast_data():
 def get_brand_sales_data(brand):  # extract tip 10 sales of specific brand
     sales_df = pd.read_csv("dataset/Sales_table.csv")
     sales_df = sales_df.drop(columns=['Genmodel_ID'])
-    sales_df['Genmodel'] = sales_df['Genmodel'].str.replace('HONDA ', '')
+    sales_df['Genmodel'] = sales_df['Genmodel'].str.replace(f'{brand} ', '')
 
     brand_sales = sales_df[sales_df['Maker'] == brand]
     year_columns = brand_sales.columns[2:]
@@ -75,10 +75,8 @@ def get_brand_sales_data(brand):  # extract tip 10 sales of specific brand
     brand_sales = brand_sales.nlargest(10, 'Total_Sales')
  
     # print(brand_sales['Genmodel'])
-
     return brand_sales
 
-get_brand_sales_data('HONDA')
 
 def get_sales_data():
 
@@ -98,7 +96,6 @@ def get_sales_data():
 
 
 def main_page_setup():
-    global global_lines
     # extract the data
     # sales_data = get_all_sales_data()
     # years = np.arange(2001, 2021)
@@ -132,7 +129,7 @@ def main_page_setup():
 
 
 def filter_line_page_setup():
-    global global_lines
+    global filter_lines
     # extract the data
     # sales_data = get_all_sales_data()
     # years = np.arange(2001, 2021)
@@ -155,7 +152,7 @@ def filter_line_page_setup():
     for brand, color in zip(sales_data['Top_10_Brands'], colors):
         line = main_page.line(x='Year', y=brand, line_width=4,
                               color=color, source=source, legend_label=brand)
-        global_lines.append(line)
+        filter_lines.append(line)
 
     vline = Span(location=2020, dimension='height',
                  line_color='Blue', line_width=2)
@@ -170,11 +167,10 @@ def filter_line_page_setup():
     return main_page
 
 def inner_page_setup():
+    global model_lines
     # extract the data
     sales_data = get_brand_sales_data('HONDA')
     years = np.arange(2001, 2021)
-
-    print(sales_data)
 
     data = pd.DataFrame({'Year': years})
     for model in sales_data['Genmodel']:
@@ -182,7 +178,6 @@ def inner_page_setup():
         model_row = sales_data.loc[sales_data['Genmodel'] == model]
         sales_values = model_row.iloc[0, 2:-1].values  # Assuming the sales data starts from the 3rd column to the second last column
         data[model] = sales_values
-    # print(data)
 
     source = ColumnDataSource(data)
 
@@ -192,15 +187,17 @@ def inner_page_setup():
 
     for model, color in zip(sales_data['Genmodel'], colors):
         line = inner_page.line(x='Year', y=model, line_width = 4, color=color, source=source, legend_label=model)
-        # inner_page.add_layout(line)
+        model_lines.append(line)
+    
+    for i in range(len(model_lines)):
+        if (i > 0):
+            model_lines[i].visible = False
+
+    # inner_page.add_layout(line)
     inner_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     inner_page.title.text_font_size = '20pt'
     inner_page.legend.location = "top_left"
     inner_page.legend.orientation = "horizontal"
     # inner_page.legend.click_policy="hide"
 
-    # show(inner_page)
-    # return None
     return inner_page
-
-# inner_page_setup()
