@@ -7,17 +7,19 @@ from bokeh import events
 
 from data_extraction import main_page_setup, filter_line_page_setup, brand_sales_graph_setup, power_shield_setup, specification_power_values
 from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
-from inner_interaction import model_selector
+from inner_interaction import model_selector, transition_page_set_up
 
 
 def main():
     main_page = main_page_setup()
     filter_line_page = filter_line_page_setup()
+    transition_page = transition_page_set_up()
 
     # inner layer
     selected_brand = 'Volkswagen'
     #
     inner_layer_sales_graph = brand_sales_graph_setup(selected_brand)
+
     # power shield setup
     best_model, best_performance, average_performance = specification_power_values(
         selected_brand)
@@ -41,6 +43,8 @@ def main():
     # buttons for page switching
     main_but = Button(label="Main Layer", button_type="success",
                       width=100, height=30)
+    transition_but = Button(label="Transition Layer", button_type="success",
+                        width=100, height=30)
     inner_but = Button(label="Inner Layer", button_type="success",
                        width=100, height=30)
     filter_but = Button(label="filter Layer", button_type="success",
@@ -68,7 +72,7 @@ def main():
     main_page = row(
         # Ensure the main page stretches
         column(main_page,
-               row(year_slider(main_page), filter_but, inner_but),
+               row(year_slider(main_page), filter_but, inner_but, transition_but),
                Spacer(height=20), sizing_mode='stretch_both'),
         # Fix the width of the logo column
         column(Spacer(height=20), audi_button, width=200)
@@ -78,40 +82,60 @@ def main():
     filter_line_page = column(filter_line_page,
                               row(year_slider(filter_line_page), brand_filter(filter_line_page),  main_but, inner_but), Spacer(height=20))
 
+    transition_page = column(transition_page,
+                              row(main_but, inner_but), Spacer(height=20))
+
     # 3. inner layer setup
     inner_page = column(row(volks_golf, best_power_shield, average_power_shield), inner_layer_sales_graph,
                         row(main_but, filter_but, model_selector(inner_layer_sales_graph)), sizing_mode="stretch_both")
 
     # main but_callback
-    main_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but), code="""
+    main_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
         main_page.visible = true;
         main.visible = false;
         inner_page.visible = false;
         inner.visible = true;
+        transition_page.visible = false;
+        transition_but.visible = true;
         filter_page.visible = false;
         filter.visible = true;
     """)
     # inner but_callback
-    inner_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but), code="""
+    inner_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
         main_page.visible = false;
         main.visible = true;
         inner_page.visible = true;
         inner.visible = false;
+        transition_page.visible = false;
+        transition_but.visible = true;
+        filter_page.visible = false;
+        filter.visible = true;
+    """)
+    transition_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
+        main_page.visible = false;
+        main.visible = true;
+        inner_page.visible = false;
+        inner.visible = false;
+        transition_page.visible = true;
+        transition_but.visible = false;
         filter_page.visible = false;
         filter.visible = true;
     """)
     # filter but_callback
-    filter_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=filter_but, main=main_but, filter=filter_but), code="""
+    filter_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=filter_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
         main_page.visible = false;
         main.visible = true;
         inner_page.visible = false;
         inner.visible = true;
+        transition_page.visible = false;
+        transition_but.visible = true;
         filter_page.visible = true;
         filter.visible = false;
     """)
 
     main_but.js_on_click(main_but_callback)
     inner_but.js_on_click(inner_but_callback)
+    transition_but.js_on_click(transition_but_callback)
     filter_but.js_on_click(filter_but_callback)
 
     # inner layer for specific car brand
@@ -120,8 +144,9 @@ def main():
     main_page.visible = True
     filter_line_page.visible = False
     inner_page.visible = False
+    transition_page.visible = False
     # show the plot
-    final_layout = layout([main_page, inner_page, filter_line_page],
+    final_layout = layout([main_page, inner_page, filter_line_page, transition_page],
                           sizing_mode='stretch_both')
     curdoc().add_root(final_layout)
 

@@ -1,4 +1,7 @@
-from bokeh.models import Select, CustomJS
+from bokeh.models import Select, CustomJS, Button, ColumnDataSource
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, Span
+from bokeh.plotting import figure, show, output_file
+from bokeh.layouts import column, row
 
 from data_extraction import model_lines
 
@@ -31,3 +34,20 @@ def model_selector(inner_page):
     select.js_on_change('value', select_callback)
 
     return select
+
+def transition_page_set_up():
+    source = ColumnDataSource()
+
+    # Create the transition page figure
+    transition_page = figure(title="Select Brand")
+    transition_page.title.text_font_size = '50pt'
+
+
+
+    # Combine the figure and buttons in a layout
+    layout = column(transition_page)
+    # show(layout)
+
+    return layout
+
+# transition_page_set_up()
