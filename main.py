@@ -82,8 +82,10 @@ def main():
     filter_line_page = column(filter_line_page,
                               row(year_slider(filter_line_page), brand_filter(filter_line_page),  main_but, inner_but), Spacer(height=20))
 
-    transition_page = column(transition_page,
-                              row(main_but, inner_but), Spacer(height=20))
+    transition_page_title = Div(text="<h1 style='font-size: 80px; text-align: center;'>Select Brand</h1>", height = 200)
+
+    transition_page = column(row(Spacer(width = 400),transition_page_title, Spacer(width= 200),column(Spacer(height = 50),main_but, filter_but)),
+                             transition_page)
 
     # 3. inner layer setup
     inner_page = column(row(volks_golf, best_power_shield, average_power_shield), inner_layer_sales_graph,
