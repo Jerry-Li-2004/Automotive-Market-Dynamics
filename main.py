@@ -1,7 +1,7 @@
 from bokeh.plotting import show, output_file
 from bokeh.layouts import layout, column, row, Spacer
 from bokeh.io import curdoc
-from bokeh.models import Button, CustomJS, Tap, Div, BuiltinIcon, SVGIcon
+from bokeh.models import Button, CustomJS, Tap, Div, BuiltinIcon, SVGIcon, InlineStyleSheet
 from bokeh import events
 
 
@@ -46,8 +46,10 @@ def main():
     filter_but = Button(label="filter Layer", button_type="success",
                         width=100, height=30)
 
-    audi_button = Button(label="Audi", button_type="success",
-                         width=100, height=30)
+    # audi testing button (currently the background image is ferrari logo)
+    audi_button = Button(label="Audi",
+                         width=100, height=30, styles={"background-image": "url('image/ferrari_logo.jpg')", "background-color": "transparent",
+                                                       "background-size": "cover"})
 
     volks_golf_html = """
     <div id="audi_logo" style="text-align: right;">
@@ -55,6 +57,11 @@ def main():
     </div>
     """
     volks_golf = Div(text=volks_golf_html)
+
+    # stylesheet = InlineStyleSheet(
+    #     css=".bk-btn { background-color: lightgray; background-image: url('your-image-url.jpg'); background-size: cover;border: none;color: white;font-size: 16px;cursor: pointer;}")
+
+    # button = Button(label="Foo", stylesheets=[stylesheet])
 
     # page setup
     # 1. main page setup

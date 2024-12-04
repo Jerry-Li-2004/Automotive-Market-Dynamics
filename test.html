@@ -19,10 +19,10 @@
     </script>
   </head>
   <body>
-    <div id="ab43b8f8-ece3-48bf-b99d-90394a6d51ff" data-root-id="p1005" style="display: contents;"></div>
+    <div id="fcf95528-3d17-4260-ac5d-94075b18c6f3" data-root-id="p1003" style="display: contents;"></div>
   
-    <script type="application/json" id="a02da440-62e1-4eaa-a019-0d4b7483d0fb">
-      {"671cf7cf-84b8-41c0-bbad-797b150ac955":{"version":"3.4.1","title":"Bokeh Application","roots":[{"type":"object","name":"Column","id":"p1005","attributes":{"children":[{"type":"object","name":"Button","id":"p1003","attributes":{"button_type":"success","js_event_callbacks":{"type":"map","entries":[["button_click",[{"type":"object","name":"CustomJS","id":"p1004","attributes":{"args":{"type":"map","entries":[["page1",{"type":"object","name":"Div","id":"p1001","attributes":{"text":"&lt;h1&gt;Page 1: Visualization 1&lt;/h1&gt;"}}],["page2",{"type":"object","name":"Div","id":"p1002","attributes":{"visible":false,"text":"&lt;h1&gt;Page 2: Visualization 2&lt;/h1&gt;"}}],["button1",{"id":"p1003"}]]},"code":"\n    if (page1.visible) {\n        page1.visible = false;\n        page2.visible = true;\n        button1.visible = false;\n    } else {\n        page1.visible = true;\n        page2.visible = false;\n        button1.visible = true;\n    }\n"}}]]]},"width":100,"height":30,"label":"Switch Page"}},{"id":"p1001"},{"id":"p1002"}]}}]}}
+    <script type="application/json" id="c2c4a632-1120-45e3-9e3c-20567c348cb6">
+      {"a31eeea5-2a17-453d-a61e-c308a23c9468":{"version":"3.4.1","title":"Bokeh Application","roots":[{"type":"object","name":"Column","id":"p1003","attributes":{"children":[{"type":"object","name":"Div","id":"p1002","attributes":{"text":"\n&lt;style&gt;\n.custom-button .bk-btn {\n    background-image: url('image/audi_logo.jpg');\n    background-size: cover;\n    width: 100px;\n    height: 100px;\n    border: none;\n}\n&lt;/style&gt;\n"}},{"type":"object","name":"Button","id":"p1001","attributes":{"button_type":"success","css_classes":["custom-button"],"label":"Click Me"}}]}}]}}
     </script>
     <script type="text/javascript">
       (function() {
@@ -30,8 +30,8 @@
           Bokeh.safely(function() {
             (function(root) {
               function embed_document(root) {
-              const docs_json = document.getElementById('a02da440-62e1-4eaa-a019-0d4b7483d0fb').textContent;
-              const render_items = [{"docid":"671cf7cf-84b8-41c0-bbad-797b150ac955","roots":{"p1005":"ab43b8f8-ece3-48bf-b99d-90394a6d51ff"},"root_ids":["p1005"]}];
+              const docs_json = document.getElementById('c2c4a632-1120-45e3-9e3c-20567c348cb6').textContent;
+              const render_items = [{"docid":"a31eeea5-2a17-453d-a61e-c308a23c9468","roots":{"p1003":"fcf95528-3d17-4260-ac5d-94075b18c6f3"},"root_ids":["p1003"]}];
               root.Bokeh.embed.embed_items(docs_json, render_items);
               }
               if (root.Bokeh !== undefined) {
