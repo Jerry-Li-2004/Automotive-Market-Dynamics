@@ -184,7 +184,7 @@ def brand_sales_graph_setup(brand_name):
     source = ColumnDataSource(data)
 
     inner_page = figure(title=brand_name + "'s Model Sales Performance Trackers", x_axis_label='Year',
-                        y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
+                        y_axis_label='Sales', sizing_mode='stretch_height', width=1500)
 
     colors = Category20[len(sales_data['Genmodel'])]
 
@@ -207,8 +207,8 @@ def brand_sales_graph_setup(brand_name):
     # inner_page.add_layout(line)
     inner_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     inner_page.title.text_font_size = '12pt'
-    inner_page.legend.location = "top_left"
-    inner_page.legend.orientation = "horizontal"
+    # inner_page.legend.location = "top_left"
+    # inner_page.legend.orientation = "horizontal"
     # inner_page.legend.click_policy="hide"
 
     return inner_page

@@ -49,12 +49,12 @@ def main():
     audi_button = Button(label="Audi", button_type="success",
                          width=100, height=30)
 
-    # audi_logo_html = """
-    # <div id="audi_logo" style="text-align: right;">
-    #     <img src="image/audi_logo.jpg" alt="Logo" width="100" height="80" style="cursor: pointer;">
-    # </div>
-    # """
-    # audi_logo = Div(text=audi_logo_html)
+    volks_golf_html = """
+    <div id="audi_logo" style="text-align: right;">
+        <img src="car_image/volkswagen_golf.jpg" alt="Logo" width="500" height="400" style="cursor: pointer;">
+    </div>
+    """
+    volks_golf = Div(text=volks_golf_html)
 
     # page setup
     # 1. main page setup
@@ -72,7 +72,7 @@ def main():
                               row(year_slider(filter_line_page), brand_filter(filter_line_page),  main_but, inner_but), Spacer(height=20))
 
     # 3. inner layer setup
-    inner_page = column(row(best_power_shield, average_power_shield), inner_layer_sales_graph,
+    inner_page = column(row(volks_golf, best_power_shield, average_power_shield), inner_layer_sales_graph,
                         row(main_but, filter_but, model_selector(inner_layer_sales_graph)), sizing_mode="stretch_both")
 
     # main but_callback
