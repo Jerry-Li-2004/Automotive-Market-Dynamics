@@ -5,7 +5,7 @@ from bokeh.models import Button, CustomJS, Tap, Div, BuiltinIcon, SVGIcon
 from bokeh import events
 
 
-from data_extraction import main_page_setup, filter_line_page_setup, inner_page_setup, power_shield_setup, audi_specification_power_values
+from data_extraction import main_page_setup, filter_line_page_setup, inner_page_setup, power_shield_setup, specification_power_values
 from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
 from inner_interaction import model_selector
 
@@ -15,9 +15,13 @@ def main():
     filter_line_page = filter_line_page_setup()
     inner_page = inner_page_setup()
 
-    # power shield
-    best_model, best_performance, average_performance = audi_specification_power_values()
-    best_power_shield = power_shield_setup(best_performance, best_model)
+    # power shield setup (inner layer)
+    selected_brand = 'Mercedes'
+    best_model, best_performance, average_performance = specification_power_values(
+        selected_brand)
+    visualization_title = selected_brand + " " + best_model
+    best_power_shield = power_shield_setup(
+        best_performance, visualization_title)
     average_power_shield = power_shield_setup(average_performance)
 
     # main page interaction

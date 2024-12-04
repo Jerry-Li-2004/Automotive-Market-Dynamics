@@ -232,36 +232,52 @@ def normalize_values(data):
     return normalized_dict
 
 
-def find_best_car(car_data):
+def find_best_car_ID(car_data):
     # Calculate the average of 5 elements in the list for each key
     averages = {key: sum(values) / len(values)
                 for key, values in car_data.items()}
 
     # Find the key with the highest average value
-    best_car = max(averages, key=averages.get)
+    best_car_ID = max(averages, key=averages.get)
 
-    return best_car
+    return best_car_ID
 
 
-def audi_specification_power_values():
+def find_best_car(car_data):
+    ad_df = pd.read_csv("data_cleaning/Ad_table.csv")
+    best_car_ID = find_best_car_ID(car_data)
+
+    # Find the car name based on the best car ID
+    car_name = ad_df.loc[ad_df['Genmodel_ID']
+                         == best_car_ID, 'Genmodel'].values
+
+    # Handle the case where no matching Genmodel_ID is found
+    if len(car_name) > 0:
+        return car_name[0]
+    else:
+        return "Car ID not found"
+
+
+def specification_power_values(brand_name=None):
+    # brand_name = 'Audi'
     # required dataset
-    price_df = pd.read_csv("dataset/Price_table.csv")
-    sales_df = pd.read_csv("dataset/Sales_table.csv")
-    ad_table_df = pd.read_csv("dataset/Ad_table (extra).csv")
+    price_df = pd.read_csv("data_cleaning/Price_table.csv")
+    sales_df = pd.read_csv("data_cleaning/Sales_table.csv")
+    ad_table_df = pd.read_csv("data_cleaning/Ad_table.csv")
 
     car_brand_directory = {}
     data = {}
     # Price average for each series (1)
     car_price = price_df.loc[price_df['Maker']
-                             == 'Audi', ["Genmodel", "Entry_price"]]
+                             == brand_name, ["Genmodel", "Genmodel_ID", "Entry_price"]]
     car_price = car_price[car_price['Entry_price'] != 0]
-    price_average = car_price.groupby('Genmodel')['Entry_price'].mean()
+    price_average = car_price.groupby('Genmodel_ID')['Entry_price'].mean()
     price_average = price_average.to_dict()
     # print(price_average)
 
     # Average_mpg (3), Engine power (4), Top speed (5)
     car_spec = ad_table_df.loc[ad_table_df['Maker']
-                               == 'Audi', ['Genmodel', 'Average_mpg', 'Engine_power', 'Top_speed']]
+                               == brand_name, ['Genmodel', "Genmodel_ID", 'Average_mpg', 'Engine_power', 'Top_speed']]
 
     car_spec = car_spec.dropna()
     car_spec['Average_mpg'] = car_spec['Average_mpg'].str.replace(
@@ -269,15 +285,15 @@ def audi_specification_power_values():
     car_spec['Top_speed'] = car_spec['Top_speed'].str.replace(
         ' mph', '').astype(float)
     car_spec_average = car_spec.groupby(
-        'Genmodel')[['Average_mpg', 'Engine_power', 'Top_speed']].mean()
+        'Genmodel_ID')[['Average_mpg', 'Engine_power', 'Top_speed']].mean()
     car_spec_average = car_spec_average.to_dict()
 
     # Sales data (2)
-    car_sales = sales_df.loc[sales_df['Maker'] == 'AUDI']
-    car_gen_model_names = car_sales['Genmodel'].drop_duplicates().to_list()
+    car_sales = sales_df.loc[sales_df['Maker'] == brand_name]
+    car_gen_model_names = car_sales['Genmodel_ID'].drop_duplicates().to_list()
 
     for genmodel in car_gen_model_names:
-        specific_genmodel_df = car_sales[car_sales['Genmodel'] == genmodel]
+        specific_genmodel_df = car_sales[car_sales['Genmodel_ID'] == genmodel]
         sales_columns = car_sales.columns[3:]
         sales_total = specific_genmodel_df[sales_columns].sum(axis=1).values[0]
         data[genmodel] = [0, 0, 0, 0, 0]
@@ -294,31 +310,31 @@ def audi_specification_power_values():
             new_data[genmodel][3] = car_spec_average['Engine_power'][genmodel]
             new_data[genmodel][4] = car_spec_average['Top_speed'][genmodel]
 
-    car_brand_directory['Audi'] = new_data
-    car_brand_directory['Audi'] = {
-        k: v for k, v in car_brand_directory['Audi'].items() if all(value != 0 for value in v)}
+    car_brand_directory[brand_name] = new_data
+    car_brand_directory[brand_name] = {
+        k: v for k, v in car_brand_directory[brand_name].items() if all(value != 0 for value in v)}
 
-    car_brand_directory['Audi'] = normalize_values(
-        car_brand_directory['Audi'])  # normalization
+    car_brand_directory[brand_name] = normalize_values(
+        car_brand_directory[brand_name])  # normalization
 
-    for genmodel in car_brand_directory['Audi'].keys():
-        car_brand_directory['Audi'][genmodel][1] = 1 - \
-            car_brand_directory['Audi'][genmodel][1]
-        car_brand_directory['Audi'][genmodel][3] = 1 - \
-            car_brand_directory['Audi'][genmodel][3]
+    for genmodel in car_brand_directory[brand_name].keys():
+        car_brand_directory[brand_name][genmodel][1] = 1 - \
+            car_brand_directory[brand_name][genmodel][1]
+        # car_brand_directory[brand_name][genmodel][3] = 1 - \
+        #     car_brand_directory[brand_name][genmodel][3]
         # reverse price, engine power scale, lower price higher score
     # index 0: sales (higher popularity, higher score), 1: price (lower price, higher score])
     # 2: Average_mpg (higher the higher), 3: Engine power (lower the best, cost saving), 4: Top speed (higher the better)
 
     average_performance = [sum(x) / len(x)
-                           for x in zip(*car_brand_directory['Audi'].values())]
+                           for x in zip(*car_brand_directory[brand_name].values())]
 
-    return find_best_car(car_brand_directory['Audi']), car_brand_directory['Audi'][find_best_car(car_brand_directory['Audi'])], average_performance
+    return find_best_car(car_brand_directory[brand_name]), car_brand_directory[brand_name][find_best_car_ID(car_brand_directory[brand_name])], average_performance
 
 
 def power_shield_setup(performance_values, visualization_title=None):
-    categories = ['Sales', 'Price (Low)',
-                  'Fuel Effiency', 'Power (Low)', 'Top Speed']
+    categories = ['Sales', 'Price (low)',
+                  'Fuel Effiency', 'Horsepower', 'Top Speed']
 
     # oil cost: petrol, diesel, electric different costs
     # all categorical data are normalized
