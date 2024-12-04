@@ -15,7 +15,7 @@ def main():
     filter_line_page = filter_line_page_setup()
 
     # inner layer
-    selected_brand = 'Audi'
+    selected_brand = 'Volkswagen'
     #
     inner_layer_sales_graph = brand_sales_graph_setup(selected_brand)
     # power shield setup

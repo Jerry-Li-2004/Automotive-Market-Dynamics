@@ -183,15 +183,22 @@ def brand_sales_graph_setup(brand_name):
 
     source = ColumnDataSource(data)
 
-    inner_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',
+    inner_page = figure(title=brand_name + "'s Model Sales Performance Trackers", x_axis_label='Year',
                         y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
 
     colors = Category20[len(sales_data['Genmodel'])]
 
+    # current version (without legend)
     for model, color in zip(sales_data['Genmodel'], colors):
         line = inner_page.line(x='Year', y=model, line_width=4,
-                               color=color, source=source, legend_label=model)
+                               color=color, source=source)
         model_lines.append(line)
+
+    # previous version (with legend)
+    # for model, color in zip(sales_data['Genmodel'], colors):
+    #     line = inner_page.line(x='Year', y=model, line_width=4,
+    #                            color=color, source=source, legend_label=model)
+    #     model_lines.append(line)
 
     for i in range(len(model_lines)):
         if (i > 0):
@@ -199,7 +206,7 @@ def brand_sales_graph_setup(brand_name):
 
     # inner_page.add_layout(line)
     inner_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
-    inner_page.title.text_font_size = '20pt'
+    inner_page.title.text_font_size = '12pt'
     inner_page.legend.location = "top_left"
     inner_page.legend.orientation = "horizontal"
     # inner_page.legend.click_policy="hide"
@@ -331,7 +338,7 @@ def specification_power_values(brand_name=None):
 
 
 def power_shield_setup(performance_values, visualization_title=None):
-    categories = ['Sales', 'Price (low)',
+    categories = ['Sales', 'Price (Low)',
                   'Fuel Effiency', 'Horsepower', 'Top Speed']
 
     # oil cost: petrol, diesel, electric different costs
