@@ -4,8 +4,6 @@ from bokeh.models import ColumnDataSource, NumeralTickFormatter, Span
 from bokeh.plotting import figure, show, output_file
 
 from bokeh.palettes import Category20
-from bokeh.layouts import gridplot
-from bokeh.io import show, output_file
 
 filter_lines = []
 model_lines = []
@@ -66,7 +64,7 @@ def get_sales_forecast_data():
 
 
 def get_brand_sales_data(brand):  # extract tip 10 sales of specific brand
-    sales_df = pd.read_csv("dataset/Sales_table.csv")
+    sales_df = pd.read_csv("data_cleaning/Sales_table.csv")
     sales_df = sales_df.drop(columns=['Genmodel_ID'])
     sales_df['Genmodel'] = sales_df['Genmodel'].str.replace(f'{brand} ', '')
 
@@ -169,10 +167,10 @@ def filter_line_page_setup():
     return main_page
 
 
-def inner_page_setup():
+def brand_sales_graph_setup(brand_name):
     global model_lines
     # extract the data
-    sales_data = get_brand_sales_data('HONDA')
+    sales_data = get_brand_sales_data(brand_name)
     years = np.arange(2001, 2021)
 
     data = pd.DataFrame({'Year': years})

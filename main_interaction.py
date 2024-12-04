@@ -1,7 +1,7 @@
 from bokeh.models import HoverTool, Span, CustomJS, Slider, CheckboxGroup
 from bokeh.layouts import row, Spacer
 
-from data_extraction import filter_lines, get_sales_forecast_data
+from data_extraction import filter_lines
 
 
 def vertical_line_with_cursor(main_page):  # show vertical lines with cursor:

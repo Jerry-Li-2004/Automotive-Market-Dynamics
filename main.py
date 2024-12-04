@@ -5,7 +5,7 @@ from bokeh.models import Button, CustomJS, Tap, Div, BuiltinIcon, SVGIcon
 from bokeh import events
 
 
-from data_extraction import main_page_setup, filter_line_page_setup, inner_page_setup, power_shield_setup, specification_power_values
+from data_extraction import main_page_setup, filter_line_page_setup, brand_sales_graph_setup, power_shield_setup, specification_power_values
 from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
 from inner_interaction import model_selector
 
@@ -13,10 +13,12 @@ from inner_interaction import model_selector
 def main():
     main_page = main_page_setup()
     filter_line_page = filter_line_page_setup()
-    inner_page = inner_page_setup()
 
-    # power shield setup (inner layer)
-    selected_brand = 'Mercedes'
+    # inner layer
+    selected_brand = 'Audi'
+    #
+    inner_layer_sales_graph = brand_sales_graph_setup(selected_brand)
+    # power shield setup
     best_model, best_performance, average_performance = specification_power_values(
         selected_brand)
     visualization_title = selected_brand + " " + best_model
@@ -70,8 +72,8 @@ def main():
                               row(year_slider(filter_line_page), brand_filter(filter_line_page),  main_but, inner_but), Spacer(height=20))
 
     # 3. inner layer setup
-    inner_page = column(row(best_power_shield, average_power_shield), inner_page,
-                        row(main_but, filter_but, model_selector(inner_page)), sizing_mode="stretch_both")
+    inner_page = column(row(best_power_shield, average_power_shield), inner_layer_sales_graph,
+                        row(main_but, filter_but, model_selector(inner_layer_sales_graph)), sizing_mode="stretch_both")
 
     # main but_callback
     main_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but), code="""
