@@ -1,4 +1,3 @@
-
 from bokeh.models import Select, CustomJS
 
 from data_extraction import model_lines
@@ -14,10 +13,11 @@ def model_selector(inner_page):
     # Create a Select widget with options for different car models
     model_names = [line.glyph.y for line in model_lines]
     # print(model_names)
-    select = Select(title="Car Model:", value=model_names[0], options=model_names)
+    select = Select(title="Car Model:",
+                    value=model_names[0], options=model_names)
 
     # Add a callback to update the plot when the selection changes
-    select_callback = CustomJS(args=dict(source=source, data=data,lines = model_lines), code="""
+    select_callback = CustomJS(args=dict(source=source, data=data, lines=model_lines), code="""
         const selected_model = cb_obj.value;
 
         for (let i = 0; i < lines.length; i++) {
