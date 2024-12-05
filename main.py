@@ -12,7 +12,7 @@ from inner_interaction import model_selector, transition_page_set_up, power_shie
 
 def main():
     main_page = main_page_setup()
-    filter_line_page = filter_line_page_setup()
+    filter_line_page, filter_line = filter_line_page_setup()
     transition_page = transition_page_set_up()
 
     # inner layer
@@ -30,17 +30,16 @@ def main():
     main_but = Button(label="Main Layer", button_type="success",
                       width=100, height=30)
     transition_but = Button(label="Transition Layer", button_type="success",
-                        width=100, height=30)
+                            width=100, height=30)
     inner_but = Button(label="Inner Layer", button_type="success",
                        width=100, height=30)
     filter_but = Button(label="filter Layer", button_type="success",
                         width=100, height=30)
 
     # audi testing button (currently the background image is ferrari logo)
-    audi_button = Button(label="Audi",
-                         width=100, height=30, styles={"background-image": "url('image/ferrari_logo.jpg')", "background-color": "transparent",
-                                                       "background-size": "cover"})
-
+    audi1_button = Button(label="Audi",
+                          width=100, height=30, styles={"background-image": "url('image/ferrari_logo.jpg')", "background-color": "transparent",
+                                                        "background-size": "cover"})
 
     # page setup
     # 1. main page setup
@@ -50,23 +49,74 @@ def main():
                row(year_slider(main_page), filter_but, inner_but, transition_but),
                Spacer(height=20), sizing_mode='stretch_both'),
         # Fix the width of the logo column
-        column(Spacer(height=20), audi_button, width=200)
+        column(Spacer(height=20), audi1_button, width=200)
     )
 
     # 2. filter layer setup
     filter_line_page = column(filter_line_page,
-                              row(year_slider(filter_line_page), brand_filter(filter_line_page),  main_but, inner_but), Spacer(height=20))
+                              row(year_slider(filter_line_page), brand_filter(filter_line_page, filter_line),  main_but, inner_but), Spacer(height=20))
 
-    transition_page_title = Div(text="<h1 style='font-size: 80px; text-align: center;'>Select Brand</h1>", height = 200)
+    transition_page_title = Div(
+        text="<h1 style='font-size: 80px; text-align: center;'>Select Brand</h1>", height=200)
+    audi_but = Button(label="AUDI Layer", button_type="success",
+                      width=100, height=30)
+    bmw_but = Button(label="BWM Layer", button_type="success",
+                     width=100, height=30)
 
-    transition_page = column(row(Spacer(width = 400),transition_page_title, Spacer(width= 200),column(Spacer(height = 50),main_but, filter_but)),
-                             transition_page)
+    transition_page = column(row(Spacer(width=400), transition_page_title, Spacer(width=200), column(Spacer(height=50), main_but, filter_but)),
+                             transition_page,
+                             row(audi_but, bmw_but))
 
     # 3. inner layer setup
     inner_page = brand_page_setup('Ford')
+    inner_page = row(inner_page, transition_but)
+
+    audi_inner_page = brand_page_setup('Audi')
+    audi_inner_page = row(audi_inner_page, transition_but)
+    bmw_inner_page = brand_page_setup('Bmw')
+    bmw_inner_page = row(bmw_inner_page, transition_but)
+
+    audi_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page=transition_page, transition_but=transition_but, audi_inner_page=audi_inner_page, audi_but=audi_but, bmw_but=bmw_but, bmw_inner_page=bmw_inner_page), code="""
+        main_page.visible = false;
+        main.visible = false;
+        inner_page.visible = false;
+        inner.visible = false;
+        transition_page.visible = false;
+        transition_but.visible = true;
+        filter_page.visible = false;
+        filter.visible = false;
+        audi_inner_page.visible = true;
+        audi_but.visible = false;
+        bmw_inner_page.visible = false;
+        bmw_but.visible = false;
+    """)
+    bmw_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page=transition_page, transition_but=transition_but, audi_inner_page=audi_inner_page, audi_but=audi_but, bmw_but=bmw_but, bmw_inner_page=bmw_inner_page), code="""
+        main_page.visible = false;
+        main.visible = false;
+        inner_page.visible = false;
+        inner.visible = false;
+        transition_page.visible = false;
+        transition_but.visible = true;
+        filter_page.visible = false;
+        filter.visible = false;
+        audi_inner_page.visible = false;
+        audi_but.visible = false;
+        bmw_inner_page.visible = true;
+        bmw_but.visible = false;
+    """)
+    inner_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page=transition_page, transition_but=transition_but), code="""
+        main_page.visible = false;
+        main.visible = true;
+        inner_page.visible = true;
+        inner.visible = false;
+        transition_page.visible = false;
+        transition_but.visible = true;
+        filter_page.visible = false;
+        filter.visible = true;
+    """)
 
     # main but_callback
-    main_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
+    main_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page=transition_page, transition_but=transition_but), code="""
         main_page.visible = true;
         main.visible = false;
         inner_page.visible = false;
@@ -77,7 +127,7 @@ def main():
         filter.visible = true;
     """)
     # inner but_callback
-    inner_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
+    inner_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page=transition_page, transition_but=transition_but), code="""
         main_page.visible = false;
         main.visible = true;
         inner_page.visible = true;
@@ -87,7 +137,7 @@ def main():
         filter_page.visible = false;
         filter.visible = true;
     """)
-    transition_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
+    transition_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page=transition_page, transition_but=transition_but, audi_inner_page=audi_inner_page, audi_but=audi_but, bmw_but=bmw_but, bmw_inner_page=bmw_inner_page), code="""
         main_page.visible = false;
         main.visible = true;
         inner_page.visible = false;
@@ -96,9 +146,17 @@ def main():
         transition_but.visible = false;
         filter_page.visible = false;
         filter.visible = true;
+        audi_inner_page.visible = false;
+        audi_but.visible = false;
+        bmw_inner_page.visible = false;
+        bmw_but.visible = false;
+        audi_inner_page.visible = false;
+        audi_but.visible = true;
+        bmw_inner_page.visible = false;
+        bmw_but.visible = true;
     """)
     # filter but_callback
-    filter_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=filter_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
+    filter_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=filter_but, main=main_but, filter=filter_but, transition_page=transition_page, transition_but=transition_but), code="""
         main_page.visible = false;
         main.visible = true;
         inner_page.visible = false;
@@ -113,16 +171,20 @@ def main():
     inner_but.js_on_click(inner_but_callback)
     transition_but.js_on_click(transition_but_callback)
     filter_but.js_on_click(filter_but_callback)
+    bmw_but.js_on_click(bmw_but_callback)
+    audi_but.js_on_click(audi_but_callback)
 
     # inner layer for specific car brand
-    audi_button.js_on_event(events.ButtonClick, inner_but_callback)
+    audi1_button.js_on_event(events.ButtonClick, inner_but_callback)
 
     main_page.visible = True
     filter_line_page.visible = False
     inner_page.visible = False
     transition_page.visible = False
+    audi_inner_page.visible = False
+    bmw_inner_page.visible = False
     # show the plot
-    final_layout = layout([main_page, inner_page, filter_line_page, transition_page],
+    final_layout = layout([main_page, inner_page, filter_line_page, transition_page, audi_inner_page, bmw_inner_page],
                           sizing_mode='stretch_both')
     curdoc().add_root(final_layout)
 

@@ -4,9 +4,6 @@ from bokeh.models import ColumnDataSource, NumeralTickFormatter, Span
 from bokeh.plotting import figure
 from bokeh.palettes import Category20
 
-filter_lines = []
-model_lines = []
-
 def get_all_sales_data():
     data = {'Total_Sales': []}
 
@@ -127,7 +124,7 @@ def main_page_setup():
 
 
 def filter_line_page_setup():
-    global filter_lines
+    filter_lines = []
     sales_data = get_sales_forecast_data()
     years = np.arange(2001, 2027)
 
@@ -157,11 +154,11 @@ def filter_line_page_setup():
     filter_page.legend.orientation = "horizontal"
     # filter_page.legend.click_policy="hide"
 
-    return filter_page
+    return filter_page, filter_lines
 
 
 def brand_sales_graph_setup(brand_name):
-    global model_lines
+    model_lines = []
     # extract the data
     sales_data = get_brand_sales_data(brand_name)
     years = np.arange(2001, 2021)
@@ -203,6 +200,6 @@ def brand_sales_graph_setup(brand_name):
     # inner_page.legend.location = "top_left"
     # inner_page.legend.orientation = "horizontal"
     # inner_page.legend.click_policy="hide"
-    return inner_page
+    return inner_page ,model_lines
 
 

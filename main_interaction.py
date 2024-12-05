@@ -1,8 +1,6 @@
 from bokeh.models import HoverTool, Span, CustomJS, Slider, CheckboxGroup
 from bokeh.layouts import row, Spacer
 
-from data_extraction import filter_lines
-
 
 def vertical_line_with_cursor(main_page):  # show vertical lines with cursor:
     vline = Span(location=0, dimension='height',
@@ -42,7 +40,7 @@ def year_slider(main_page):
     return centered_slider
 
 
-def brand_filter(main_page):
+def brand_filter(main_page, filter_lines):
     # Create a CheckboxGroup for brand selection
     brands = [item.label['value'] for item in main_page.legend.items]
     checkbox_group = CheckboxGroup(labels=brands, active=[])

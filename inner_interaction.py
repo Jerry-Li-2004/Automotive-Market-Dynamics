@@ -5,11 +5,11 @@ from bokeh.layouts import column, row
 import pandas as pd
 import numpy as np
 
-from data_extraction import model_lines, brand_sales_graph_setup
+from data_extraction import brand_sales_graph_setup
 from main_interaction import info_with_cursor, vertical_line_with_cursor, year_slider
 
 
-def model_selector(inner_page):
+def model_selector(inner_page, model_lines):
     # Extract the data from the ColumnDataSource used in inner_page
     source = inner_page.renderers[0].data_source
     data = source.data
@@ -36,51 +36,32 @@ def model_selector(inner_page):
 
     return select
 
-
 def transition_page_set_up():
     # Create the transition page figure
     # transition_page = Div(text="<h1 style='font-size: 80px; text-align: center;'>Select Brand</h1>")
 
-    audi_but = Button(label="Audi", button_type="success",
-                      width=275, height=70)
-    bmw_but = Button(label="BMW", button_type="success", width=275, height=70)
-    ford_but = Button(label="ford", button_type="success",
-                      width=275, height=70)
-    kia_but = Button(label="Kia", button_type="success", width=275, height=70)
-    mercedes_but = Button(
-        label="Mercedes-Benz", button_type="success", width=275, height=70)
-    nissan_but = Button(
-        label="Nissan", button_type="success", width=275, height=70)
-    peugeot_but = Button(
-        label="Peugeot", button_type="success", width=275, height=70)
-    toyota_but = Button(
-        label="Toyota", button_type="success", width=275, height=70)
-    vauxhall_but = Button(
-        label="Vauxhall", button_type="success", width=275, height=70)
-    volkswagen_but = Button(
-        label="Volkswagen", button_type="success", width=275, height=70)
+    audi_but = Button(label="audi", button_type="success",width=275, height=70)
+    bmw_but = Button(label="bmw", button_type="success",width=275, height=70)
+    ford_but = Button(label="ford", button_type="success",width=275, height=70)
+    kia_but = Button(label="kia", button_type="success",width=275, height=70)
+    mercedes_but = Button(label="mercedes", button_type="success",width=275, height=70)
+    nissan_but = Button(label="nissan", button_type="success",width=275, height=70)
+    peugeot_but = Button(label="peugeot", button_type="success",width=275, height=70)
+    toyota_but = Button(label="toyota", button_type="success",width=275, height=70)
+    vauxhall_but = Button(label="vauxhall", button_type="success",width=275, height=70)
+    volkswagen_but = Button(label="volkswagen", button_type="success",width=275, height=70)
 
-    # audi_logo_html = """<img src="image/audi_logo.jpg" width="275" height="150">"""
-    # bmw_logo_html = """<img src="image/bmw_logo.jpg" width="275" height="150">"""
-    # ford_logo_html = """<img src="image/ford_logo.jpg" width="275" height="150">"""
-    # kia_logo_html = """<img src="image/kia_logo.jpg" width="275" height="150">"""
-    # mercedes_logo_html = """<img src="image/mercedes_logo.jpg" width="275" height="150">"""
-    # nissan_logo_html = """<img src="image/nissan_logo.jpg" width="275" height="150">"""
-    # peugeot_logo_html = """<img src="image/peugeot_logo.jpg" width="275" height="150">"""
-    # toyota_logo_html = """<img src="image/toyota_logo.jpg" width="275" height="150">"""
-    # vauxhall_logo_html = """<img src="image/vauxhall_logo.jpg" width="275" height="150">"""
-    # volkswagen_logo_html = """<img src="image/volkswagen_logo.jpg" width="275" height="150">"""
 
-    audi_logo_html = """<img src="brand_logo/1.png" width="275" height="150">"""
-    bmw_logo_html = """<img src="brand_logo/2.png" width="275" height="150">"""
-    ford_logo_html = """<img src="brand_logo/3.png" width="275" height="150">"""
-    kia_logo_html = """<img src="brand_logo/4.png" width="275" height="150">"""
-    mercedes_logo_html = """<img src="brand_logo/5.png" width="275" height="150">"""
-    nissan_logo_html = """<img src="brand_logo/6.png" width="275" height="150">"""
-    peugeot_logo_html = """<img src="brand_logo/7.png" width="275" height="150">"""
-    toyota_logo_html = """<img src="brand_logo/8.png" width="275" height="150">"""
-    vauxhall_logo_html = """<img src="brand_logo/9.png" width="275" height="150">"""
-    volkswagen_logo_html = """<img src="brand_logo/10.png" width="275" height="150">"""
+    audi_logo_html = """<img src="image/audi_logo.jpg" width="275" height="150">"""
+    bmw_logo_html = """<img src="image/bmw_logo.jpg" width="275" height="150">"""
+    ford_logo_html = """<img src="image/ford_logo.jpg" width="275" height="150">"""
+    kia_logo_html = """<img src="image/kia_logo.jpg" width="275" height="150">"""
+    mercedes_logo_html = """<img src="image/mercedes_logo.jpg" width="275" height="150">"""
+    nissan_logo_html = """<img src="image/nissan_logo.jpg" width="275" height="150">"""
+    peugeot_logo_html = """<img src="image/peugeot_logo.jpg" width="275" height="150">"""
+    toyota_logo_html = """<img src="image/toyota_logo.jpg" width="275" height="150">"""
+    vauxhall_logo_html = """<img src="image/vauxhall_logo.jpg" width="275" height="150">"""
+    volkswagen_logo_html = """<img src="image/volkswagen_logo.jpg" width="275" height="150">"""
 
     audi_logo = Div(text=audi_logo_html)
     bmw_logo = Div(text=bmw_logo_html)
@@ -93,18 +74,16 @@ def transition_page_set_up():
     vauxhall_logo = Div(text=vauxhall_logo_html)
     volkswagen_logo = Div(text=volkswagen_logo_html)
 
+
     # Combine the figure and buttons in a layout
-    layout = column(row(audi_logo, bmw_logo, ford_logo, kia_logo, mercedes_logo),
-                    row(audi_but, bmw_but, ford_but, kia_but, mercedes_but),
-                    row(nissan_logo, peugeot_logo, toyota_logo,
-                        vauxhall_logo, volkswagen_logo),
-                    row(nissan_but, peugeot_but, toyota_but,
-                        vauxhall_but, volkswagen_but)
+    layout = column(row(audi_logo,bmw_logo,ford_logo,kia_logo,mercedes_logo),
+                    # row(audi_but,bmw_but,ford_but,kia_but,mercedes_but),
+                    row(nissan_logo,peugeot_logo,toyota_logo,vauxhall_logo,volkswagen_logo),
+                    # row(nissan_but,peugeot_but,toyota_but,vauxhall_but,volkswagen_but)
                     )
     # show(layout)
 
     return layout
-
 
 def normalize_values(data):
     # Transpose the dictionary to work with columns
@@ -287,9 +266,10 @@ def power_shield_setup(performance_values, visualization_title=None):
     return p
 
 
+
 def brand_page_setup(target_brand):
-    inner_layer_sales_graph = brand_sales_graph_setup(target_brand)
-    inner_layer_sales_graph.width = 500
+    inner_layer_sales_graph, model_lines = brand_sales_graph_setup(target_brand)
+    inner_layer_sales_graph.width = 250
 
     # top model photo
     top_performance_model_html = """
@@ -300,11 +280,9 @@ def brand_page_setup(target_brand):
     top_performance_model = Div(text=top_performance_model_html)
 
     # power shield setup
-    best_model, best_performance, average_performance = specification_power_values(
-        target_brand)
+    best_model, best_performance, average_performance = specification_power_values(target_brand)
     visualization_title = target_brand + " " + best_model
-    best_power_shield = power_shield_setup(
-        best_performance, visualization_title)
+    best_power_shield = power_shield_setup(best_performance, visualization_title)
     average_power_shield = power_shield_setup(average_performance)
 
     # inner page interaction
@@ -312,7 +290,7 @@ def brand_page_setup(target_brand):
     # info_with_cursor(inner_layer_sales_graph)  # show information when hover
 
     brand_page = column(row(top_performance_model, best_power_shield, average_power_shield), inner_layer_sales_graph,
-                        row(model_selector(inner_layer_sales_graph), year_slider(inner_layer_sales_graph)), sizing_mode="stretch_both")
+                        row( model_selector(inner_layer_sales_graph, model_lines),year_slider(inner_layer_sales_graph)) , sizing_mode="stretch_both")
     # show(brand_page)
     return brand_page
 
