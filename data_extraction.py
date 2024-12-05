@@ -111,9 +111,11 @@ def main_page_setup():
     main_page.varea_stack(stackers=sales_data['Top_10_Brands'],
                           x='Year', color=colors, source=source, legend_label=sales_data['Top_10_Brands'])
 
-    vline = Span(location=2020, dimension='height',
-                 line_color='Blue', line_width=2)
-    main_page.add_layout(vline)
+    # vline = Span(location=2020, dimension='height',
+    #              line_color='Blue', line_width=2, end=1500000)
+    # main_page.add_layout(vline)
+    main_page.line([2020, 2020], [-50000, 1500000],
+                   line_width=2, line_color='Black')
 
     main_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     main_page.title.text_font_size = '20pt'

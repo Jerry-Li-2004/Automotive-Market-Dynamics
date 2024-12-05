@@ -36,6 +36,8 @@
 # # Show the layout
 # show(layout)
 
+from bokeh.io import output_file
+from bokeh.plotting import figure, show
 from bokeh.plotting import figure
 from bokeh.layouts import gridplot
 from bokeh.io import show, output_file
