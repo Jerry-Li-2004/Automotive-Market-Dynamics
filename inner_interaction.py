@@ -272,6 +272,26 @@ def get_top_performance_model_html(brand):
 
 
 def brand_page_setup(target_brand):
+    logo_html = """<img src="brand_logo/2.png" width="275" height="150">"""
+
+    brand_logos = {
+        'Audi': '1.png',
+        'BMW': '2.png',
+        'Ford': '3.png',
+        'Kia': '4.png',
+        'Mercedes': '5.png',
+        'Nissan': '6.png',
+        'Peugeot': '7.png',
+        'Toyota': '8.png',
+        'Vauxhall': '9.png',
+        'Volkswagen': '10.png'
+    }
+
+    if target_brand in brand_logos:
+        logo_html = f"""<img src="brand_logo/{
+            brand_logos[target_brand]}" width="275" height="150">"""
+
+    logo = Div(text=logo_html)
     inner_layer_sales_graph, model_lines = brand_sales_graph_setup(
         target_brand)
     inner_layer_predicted_price_graph, predicted_model_lines = predicted_price_graph_setup(
@@ -300,8 +320,8 @@ def brand_page_setup(target_brand):
     # vertical_line_with_cursor(inner_layer_sales_graph)
     # info_with_cursor(inner_layer_sales_graph)  # show information when hover
 
-    brand_page = column(row(top_performance_model, info_box(), best_power_shield, average_power_shield), inner_layer_sales_graph,
-                        row(model_selector(inner_layer_sales_graph, model_lines), year_slider(inner_layer_sales_graph)), sizing_mode="stretch_both")
+    brand_page = row(column(row(logo, model_selector(inner_layer_sales_graph, model_lines), top_performance_model),
+                            row(column(inner_layer_sales_graph, year_slider(inner_layer_sales_graph))), sizing_mode="stretch_both"), column(info_box(), best_power_shield, average_power_shield))
     # show(brand_page)
     return brand_page
 
