@@ -1,11 +1,13 @@
 from bokeh.models import Select, CustomJS, Button
 from bokeh.models import Div
-from bokeh.plotting import figure
+from bokeh.plotting import figure, show
 from bokeh.layouts import column, row
 import pandas as pd
 import numpy as np
 
-from data_extraction import model_lines
+from data_extraction import model_lines, brand_sales_graph_setup
+from main_interaction import info_with_cursor, vertical_line_with_cursor, year_slider
+
 
 def model_selector(inner_page):
     # Extract the data from the ColumnDataSource used in inner_page
@@ -264,3 +266,32 @@ def power_shield_setup(performance_values, visualization_title=None):
     return p
 
 
+
+def brand_page_setup(target_brand):
+    inner_layer_sales_graph = brand_sales_graph_setup(target_brand)
+    inner_layer_sales_graph.width = 500
+
+    # top model photo
+    top_performance_model_html = """
+    <div id="audi_logo" style="text-align: right;">
+        <img src="car_image/volkswagen_golf.jpg" alt="Logo" width="500" height="400" style="cursor: pointer;">
+    </div>
+    """
+    top_performance_model = Div(text=top_performance_model_html)
+
+    # power shield setup
+    best_model, best_performance, average_performance = specification_power_values(target_brand)
+    visualization_title = target_brand + " " + best_model
+    best_power_shield = power_shield_setup(best_performance, visualization_title)
+    average_power_shield = power_shield_setup(average_performance)
+
+    # inner page interaction
+    # vertical_line_with_cursor(inner_layer_sales_graph)
+    # info_with_cursor(inner_layer_sales_graph)  # show information when hover
+
+    brand_page = column(row(top_performance_model, best_power_shield, average_power_shield), inner_layer_sales_graph,
+                        row( model_selector(inner_layer_sales_graph),year_slider(inner_layer_sales_graph)) , sizing_mode="stretch_both")
+    # show(brand_page)
+    return brand_page
+
+# brand_page_setup('Audi')

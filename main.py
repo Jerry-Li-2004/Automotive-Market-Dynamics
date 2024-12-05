@@ -7,7 +7,7 @@ from bokeh import events
 
 from data_extraction import main_page_setup, filter_line_page_setup, brand_sales_graph_setup
 from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
-from inner_interaction import model_selector, transition_page_set_up, power_shield_setup, specification_power_values
+from inner_interaction import model_selector, transition_page_set_up, power_shield_setup, specification_power_values, brand_page_setup
 
 
 def main():
@@ -16,17 +16,6 @@ def main():
     transition_page = transition_page_set_up()
 
     # inner layer
-    selected_brand = 'Volkswagen'
-    #
-    inner_layer_sales_graph = brand_sales_graph_setup(selected_brand)
-
-    # power shield setup
-    best_model, best_performance, average_performance = specification_power_values(
-        selected_brand)
-    visualization_title = selected_brand + " " + best_model
-    best_power_shield = power_shield_setup(
-        best_performance, visualization_title)
-    average_power_shield = power_shield_setup(average_performance)
 
     # main page interaction
     vertical_line_with_cursor(main_page)  # show vertical lines with cursor
@@ -36,9 +25,6 @@ def main():
     # show vertical lines with cursor
     vertical_line_with_cursor(filter_line_page)
     info_with_cursor(filter_line_page)  # show information when hover
-
-    # inner page interaction
-    # info_with_cursor(inner_layer_page)  # show information when hover
 
     # buttons for page switching
     main_but = Button(label="Main Layer", button_type="success",
@@ -55,17 +41,6 @@ def main():
                          width=100, height=30, styles={"background-image": "url('image/ferrari_logo.jpg')", "background-color": "transparent",
                                                        "background-size": "cover"})
 
-    volks_golf_html = """
-    <div id="audi_logo" style="text-align: right;">
-        <img src="car_image/volkswagen_golf.jpg" alt="Logo" width="500" height="400" style="cursor: pointer;">
-    </div>
-    """
-    volks_golf = Div(text=volks_golf_html)
-
-    # stylesheet = InlineStyleSheet(
-    #     css=".bk-btn { background-color: lightgray; background-image: url('your-image-url.jpg'); background-size: cover;border: none;color: white;font-size: 16px;cursor: pointer;}")
-
-    # button = Button(label="Foo", stylesheets=[stylesheet])
 
     # page setup
     # 1. main page setup
@@ -88,8 +63,7 @@ def main():
                              transition_page)
 
     # 3. inner layer setup
-    inner_page = column(row(volks_golf, best_power_shield, average_power_shield), inner_layer_sales_graph,
-                        row(main_but, filter_but, model_selector(inner_layer_sales_graph)), sizing_mode="stretch_both")
+    inner_page = brand_page_setup('Ford')
 
     # main but_callback
     main_but_callback = CustomJS(args=dict(main_page=main_page, inner_page=inner_page, filter_page=filter_line_page, inner=inner_but, main=main_but, filter=filter_but, transition_page = transition_page, transition_but = transition_but), code="""
