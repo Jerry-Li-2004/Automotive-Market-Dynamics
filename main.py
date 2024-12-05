@@ -5,9 +5,9 @@ from bokeh.models import Button, CustomJS, Tap, Div, BuiltinIcon, SVGIcon, Inlin
 from bokeh import events
 
 
-from data_extraction import main_page_setup, filter_line_page_setup, brand_sales_graph_setup, power_shield_setup, specification_power_values
+from data_extraction import main_page_setup, filter_line_page_setup, brand_sales_graph_setup
 from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
-from inner_interaction import model_selector, transition_page_set_up
+from inner_interaction import model_selector, transition_page_set_up, power_shield_setup, specification_power_values
 
 
 def main():
