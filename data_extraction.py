@@ -175,7 +175,7 @@ def brand_sales_graph_setup(brand_name):
     source = ColumnDataSource(data)
 
     inner_page = figure(title=brand_name + "'s Model Sales Performance Trackers", x_axis_label='Year',
-                        y_axis_label='Sales', sizing_mode='stretch_height', width=1500)
+                        y_axis_label='Sales', width=500, height=400)
 
     colors = Category20[len(sales_data['Genmodel'])]
 
@@ -190,6 +190,56 @@ def brand_sales_graph_setup(brand_name):
     #     line = inner_page.line(x='Year', y=model, line_width=4,
     #                            color=color, source=source, legend_label=model)
     #     model_lines.append(line)
+
+    for i in range(len(model_lines)):
+        if (i > 0):
+            model_lines[i].visible = False
+
+    # inner_page.add_layout(line)
+    inner_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
+    inner_page.title.text_font_size = '12pt'
+    # inner_page.legend.location = "top_left"
+    # inner_page.legend.orientation = "horizontal"
+    # inner_page.legend.click_policy="hide"
+    return inner_page, model_lines
+
+
+def predicted_price_data(target_brand):
+    projected_price_df = pd.read_csv(
+        "data_cleaning/Projected_Price_data.csv")
+
+    projected_price_data = projected_price_df[projected_price_df['Maker']
+                                              == target_brand]
+    projected_price_data = projected_price_data.head(10)
+    return projected_price_data
+
+
+def predicted_price_graph_setup(brand_name):
+    model_lines = []
+    # extract the data
+    sales_data = predicted_price_data(brand_name)
+    years = np.arange(2022, 2027)
+
+    data = pd.DataFrame({'Year': years})
+    for model in sales_data['Genmodel']:
+        # print(model[6:])
+        model_row = sales_data.loc[sales_data['Genmodel'] == model]
+        # Assuming the sales data starts from the 3rd column to the second last column
+        sales_values = model_row.iloc[0, 2:-1].values
+        data[model] = sales_values
+
+    source = ColumnDataSource(data)
+
+    inner_page = figure(title=brand_name + "'s Model Price Performance Trackers", x_axis_label='Year',
+                        y_axis_label='Price (in Pound)', width=500, height=400)
+
+    colors = Category20[len(sales_data['Genmodel'])]
+
+    # current version (without legend)
+    for model, color in zip(sales_data['Genmodel'], colors):
+        line = inner_page.line(x='Year', y=model, line_width=4,
+                               color=color, source=source)
+        model_lines.append(line)
 
     for i in range(len(model_lines)):
         if (i > 0):

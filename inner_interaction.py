@@ -1,11 +1,11 @@
-from bokeh.models import Select, CustomJS, Button
+from bokeh.models import Select, CustomJS, Button, Spacer
 from bokeh.models import Div
 from bokeh.plotting import figure, show
 from bokeh.layouts import column, row
 import pandas as pd
 import numpy as np
 
-from data_extraction import brand_sales_graph_setup
+from data_extraction import brand_sales_graph_setup, predicted_price_graph_setup
 from main_interaction import info_with_cursor, vertical_line_with_cursor, year_slider
 
 
@@ -41,35 +41,16 @@ def transition_page_set_up():
     # Create the transition page figure
     # transition_page = Div(text="<h1 style='font-size: 80px; text-align: center;'>Select Brand</h1>")
 
-    audi_but = Button(label="audi", button_type="success",
-                      width=275, height=70)
-    bmw_but = Button(label="bmw", button_type="success", width=275, height=70)
-    ford_but = Button(label="ford", button_type="success",
-                      width=275, height=70)
-    kia_but = Button(label="kia", button_type="success", width=275, height=70)
-    mercedes_but = Button(
-        label="mercedes", button_type="success", width=275, height=70)
-    nissan_but = Button(
-        label="nissan", button_type="success", width=275, height=70)
-    peugeot_but = Button(
-        label="peugeot", button_type="success", width=275, height=70)
-    toyota_but = Button(
-        label="toyota", button_type="success", width=275, height=70)
-    vauxhall_but = Button(
-        label="vauxhall", button_type="success", width=275, height=70)
-    volkswagen_but = Button(
-        label="volkswagen", button_type="success", width=275, height=70)
-
-    audi_logo_html = """<img src="image/audi_logo.jpg" width="275" height="150">"""
-    bmw_logo_html = """<img src="image/bmw_logo.jpg" width="275" height="150">"""
-    ford_logo_html = """<img src="image/ford_logo.jpg" width="275" height="150">"""
-    kia_logo_html = """<img src="image/kia_logo.jpg" width="275" height="150">"""
-    mercedes_logo_html = """<img src="image/mercedes_logo.jpg" width="275" height="150">"""
-    nissan_logo_html = """<img src="image/nissan_logo.jpg" width="275" height="150">"""
-    peugeot_logo_html = """<img src="image/peugeot_logo.jpg" width="275" height="150">"""
-    toyota_logo_html = """<img src="image/toyota_logo.jpg" width="275" height="150">"""
-    vauxhall_logo_html = """<img src="image/vauxhall_logo.jpg" width="275" height="150">"""
-    volkswagen_logo_html = """<img src="image/volkswagen_logo.jpg" width="275" height="150">"""
+    audi_logo_html = """<img src="brand_logo/1.png" width="275" height="150">"""
+    bmw_logo_html = """<img src="brand_logo/2.png" width="275" height="150">"""
+    ford_logo_html = """<img src="brand_logo/3.png" width="275" height="150">"""
+    kia_logo_html = """<img src="brand_logo/4.png" width="275" height="150">"""
+    mercedes_logo_html = """<img src="brand_logo/5.png" width="275" height="150">"""
+    nissan_logo_html = """<img src="brand_logo/6.png" width="275" height="150">"""
+    peugeot_logo_html = """<img src="brand_logo/7.png" width="275" height="150">"""
+    toyota_logo_html = """<img src="brand_logo/8.png" width="275" height="150">"""
+    vauxhall_logo_html = """<img src="brand_logo/9.png" width="275" height="150">"""
+    volkswagen_logo_html = """<img src="brand_logo/10.png" width="275" height="150">"""
 
     audi_logo = Div(text=audi_logo_html)
     bmw_logo = Div(text=bmw_logo_html)
@@ -278,17 +259,28 @@ def power_shield_setup(performance_values, visualization_title=None):
     return p
 
 
+def get_top_performance_model_html(brand):
+    part1 = """<div id="logo" style="text-align: right;"> <img src="car_image/"""
+    part2 = str(brand) + """.jpg" """
+    part3 = """alt="Logo" width="500" height="400" style="cursor: pointer;"></div>"""
+    return (part1+part2+part3)
+
+
 def brand_page_setup(target_brand):
     inner_layer_sales_graph, model_lines = brand_sales_graph_setup(
         target_brand)
-    inner_layer_sales_graph.width = 250
+    inner_layer_predicted_price_graph, predicted_model_lines = predicted_price_graph_setup(
+        target_brand)
+    # inner_layer_sales_graph.width = 250
+    # inner_layer_predicted_price_graph.width = 250
 
     # top model photo
-    top_performance_model_html = """
-    <div id="audi_logo" style="text-align: right;">
-        <img src="car_image/volkswagen_golf.jpg" alt="Logo" width="500" height="400" style="cursor: pointer;">
-    </div>
-    """
+    top_performance_model_html = get_top_performance_model_html(target_brand)
+    # top_performance_model_html = """
+    # <div id="audi_logo" style="text-align: right;">
+    #     <img src="car_image/volkswagen_golf.jpg" alt="Logo" width="500" height="400" style="cursor: pointer;">
+    # </div>
+    # """
     top_performance_model = Div(text=top_performance_model_html)
 
     # power shield setup

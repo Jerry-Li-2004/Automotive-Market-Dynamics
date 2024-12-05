@@ -4,6 +4,8 @@ import pandas as pd
 sales_df = pd.read_csv('dataset/Sales_table.csv')
 price_df = pd.read_csv('dataset/Price_table.csv')
 ad_df = pd.read_csv('dataset/Ad_table (extra).csv')
+predicted_price_df = pd.read_csv(
+    'Prediction Analysis/Projected_Price_data.csv')
 
 
 def standardize_names(df, maker_col, genmodel_col):
@@ -18,8 +20,11 @@ def standardize_names(df, maker_col, genmodel_col):
 sales_df = standardize_names(sales_df, 'Maker', 'Genmodel')
 price_df = standardize_names(price_df, 'Maker', 'Genmodel')
 ad_df = standardize_names(ad_df, 'Maker', 'Genmodel')
+predicted_price_df = standardize_names(predicted_price_df, 'Maker', 'Genmodel')
 
 # Save the cleaned datasets
-sales_df.to_csv('data_cleaning/Sales_table.csv', index=False)
-price_df.to_csv('data_cleaning/Price_table.csv', index=False)
-ad_df.to_csv('data_cleaning/Ad_table.csv', index=False)
+# sales_df.to_csv('data_cleaning/Sales_table.csv', index=False)
+# price_df.to_csv('data_cleaning/Price_table.csv', index=False)
+# ad_df.to_csv('data_cleaning/Ad_table.csv', index=False)
+predicted_price_df.to_csv(
+    'data_cleaning/Projected_Price_data.csv', index=False)

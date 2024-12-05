@@ -18,30 +18,30 @@ def main():
                         width=100, height=30)
 
     # audi testing button (currently the background image is ferrari logo)
-    audi1_button = Button(label="Audi",
-                          width=100, height=30, styles={"background-image": "url('image/ferrari_logo.jpg')", "background-color": "transparent",
-                                                        "background-size": "cover"})
+    # audi1_button = Button(label="Audi",
+    #                       width=100, height=30, styles={"background-image": "url('image/ferrari_logo.jpg')", "background-color": "transparent",
+    #                                                     "background-size": "cover"})
 
     audi_but = Button(
-        label="AUDI", button_type="success", width=275, height=70)
+        label="Audi", button_type="success", width=275, height=70)
     bmw_but = Button(
         label="BWM", button_type="success", width=275, height=70)
     ford_but = Button(
-        label="FORD", button_type="success", width=275, height=70)
+        label="Ford", button_type="success", width=275, height=70)
     kia_but = Button(
-        label="kia", button_type="success", width=275, height=70)
+        label="Kia", button_type="success", width=275, height=70)
     mercedes_but = Button(
-        label="mercedes", button_type="success", width=275, height=70)
+        label="Mercedes", button_type="success", width=275, height=70)
     nissan_but = Button(
-        label="nissan", button_type="success", width=275, height=70)
+        label="Nissan", button_type="success", width=275, height=70)
     peugeot_but = Button(
-        label="peugeot", button_type="success", width=275, height=70)
+        label="Peugeot", button_type="success", width=275, height=70)
     toyota_but = Button(
-        label="toyota", button_type="success", width=275, height=70)
+        label="Toyota", button_type="success", width=275, height=70)
     vauxhall_but = Button(
-        label="vauxhall", button_type="success", width=275, height=70)
+        label="Vauxhall", button_type="success", width=275, height=70)
     volkswagen_but = Button(
-        label="volkswagen", button_type="success", width=275, height=70)
+        label="Volkswagen", button_type="success", width=275, height=70)
 
     # -----------------------1. main_page setup---------------------------#
     main_page = main_page_setup()
@@ -58,7 +58,7 @@ def main():
         column(main_page, row(year_slider(main_page), filter_but, transition_but),
                Spacer(height=20), sizing_mode='stretch_both'),
         # Fix the width of the logo column
-        column(Spacer(height=20), audi1_button, width=200)
+        column(Spacer(height=20), width=200)
     )
 
     # ------------------------2. filter layer-------------------------------#
@@ -260,7 +260,7 @@ def main():
 
     # ------------------------5. show the plot---------------------------#
     # inner layer for specific car brand
-    audi1_button.js_on_event(events.ButtonClick, audi_but_callback)
+    # audi1_button.js_on_event(events.ButtonClick, audi_but_callback)
 
     main_page.visible = True
     filter_line_page.visible = False
