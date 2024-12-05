@@ -36,21 +36,29 @@ def model_selector(inner_page, model_lines):
 
     return select
 
+
 def transition_page_set_up():
     # Create the transition page figure
     # transition_page = Div(text="<h1 style='font-size: 80px; text-align: center;'>Select Brand</h1>")
 
-    audi_but = Button(label="audi", button_type="success",width=275, height=70)
-    bmw_but = Button(label="bmw", button_type="success",width=275, height=70)
-    ford_but = Button(label="ford", button_type="success",width=275, height=70)
-    kia_but = Button(label="kia", button_type="success",width=275, height=70)
-    mercedes_but = Button(label="mercedes", button_type="success",width=275, height=70)
-    nissan_but = Button(label="nissan", button_type="success",width=275, height=70)
-    peugeot_but = Button(label="peugeot", button_type="success",width=275, height=70)
-    toyota_but = Button(label="toyota", button_type="success",width=275, height=70)
-    vauxhall_but = Button(label="vauxhall", button_type="success",width=275, height=70)
-    volkswagen_but = Button(label="volkswagen", button_type="success",width=275, height=70)
-
+    audi_but = Button(label="audi", button_type="success",
+                      width=275, height=70)
+    bmw_but = Button(label="bmw", button_type="success", width=275, height=70)
+    ford_but = Button(label="ford", button_type="success",
+                      width=275, height=70)
+    kia_but = Button(label="kia", button_type="success", width=275, height=70)
+    mercedes_but = Button(
+        label="mercedes", button_type="success", width=275, height=70)
+    nissan_but = Button(
+        label="nissan", button_type="success", width=275, height=70)
+    peugeot_but = Button(
+        label="peugeot", button_type="success", width=275, height=70)
+    toyota_but = Button(
+        label="toyota", button_type="success", width=275, height=70)
+    vauxhall_but = Button(
+        label="vauxhall", button_type="success", width=275, height=70)
+    volkswagen_but = Button(
+        label="volkswagen", button_type="success", width=275, height=70)
 
     audi_logo_html = """<img src="image/audi_logo.jpg" width="275" height="150">"""
     bmw_logo_html = """<img src="image/bmw_logo.jpg" width="275" height="150">"""
@@ -74,16 +82,17 @@ def transition_page_set_up():
     vauxhall_logo = Div(text=vauxhall_logo_html)
     volkswagen_logo = Div(text=volkswagen_logo_html)
 
-
     # Combine the figure and buttons in a layout
-    layout = column(row(audi_logo,bmw_logo,ford_logo,kia_logo,mercedes_logo),
+    layout = column(row(audi_logo, bmw_logo, ford_logo, kia_logo, mercedes_logo),
                     # row(audi_but,bmw_but,ford_but,kia_but,mercedes_but),
-                    row(nissan_logo,peugeot_logo,toyota_logo,vauxhall_logo,volkswagen_logo),
+                    row(nissan_logo, peugeot_logo, toyota_logo,
+                        vauxhall_logo, volkswagen_logo),
                     # row(nissan_but,peugeot_but,toyota_but,vauxhall_but,volkswagen_but)
                     )
     # show(layout)
 
     return layout
+
 
 def normalize_values(data):
     # Transpose the dictionary to work with columns
@@ -266,9 +275,9 @@ def power_shield_setup(performance_values, visualization_title=None):
     return p
 
 
-
 def brand_page_setup(target_brand):
-    inner_layer_sales_graph, model_lines = brand_sales_graph_setup(target_brand)
+    inner_layer_sales_graph, model_lines = brand_sales_graph_setup(
+        target_brand)
     inner_layer_sales_graph.width = 250
 
     # top model photo
@@ -280,9 +289,11 @@ def brand_page_setup(target_brand):
     top_performance_model = Div(text=top_performance_model_html)
 
     # power shield setup
-    best_model, best_performance, average_performance = specification_power_values(target_brand)
+    best_model, best_performance, average_performance = specification_power_values(
+        target_brand)
     visualization_title = target_brand + " " + best_model
-    best_power_shield = power_shield_setup(best_performance, visualization_title)
+    best_power_shield = power_shield_setup(
+        best_performance, visualization_title)
     average_power_shield = power_shield_setup(average_performance)
 
     # inner page interaction
@@ -290,7 +301,7 @@ def brand_page_setup(target_brand):
     # info_with_cursor(inner_layer_sales_graph)  # show information when hover
 
     brand_page = column(row(top_performance_model, best_power_shield, average_power_shield), inner_layer_sales_graph,
-                        row( model_selector(inner_layer_sales_graph, model_lines),year_slider(inner_layer_sales_graph)) , sizing_mode="stretch_both")
+                        row(model_selector(inner_layer_sales_graph, model_lines), year_slider(inner_layer_sales_graph)), sizing_mode="stretch_both")
     # show(brand_page)
     return brand_page
 

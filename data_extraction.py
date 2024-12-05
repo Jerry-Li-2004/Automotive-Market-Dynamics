@@ -4,6 +4,7 @@ from bokeh.models import ColumnDataSource, NumeralTickFormatter, Span
 from bokeh.plotting import figure
 from bokeh.palettes import Category20
 
+
 def get_all_sales_data():
     data = {'Total_Sales': []}
 
@@ -135,13 +136,13 @@ def filter_line_page_setup():
     source = ColumnDataSource(data)
 
     filter_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',
-                       y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
+                         y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
 
     colors = Category20[len(sales_data['Top_10_Brands'])]
 
     for brand, color in zip(sales_data['Top_10_Brands'], colors):
         line = filter_page.line(x='Year', y=brand, line_width=4,
-                              color=color, source=source, legend_label=brand)
+                                color=color, source=source, legend_label=brand)
         filter_lines.append(line)
 
     vline = Span(location=2020, dimension='height',
@@ -200,6 +201,4 @@ def brand_sales_graph_setup(brand_name):
     # inner_page.legend.location = "top_left"
     # inner_page.legend.orientation = "horizontal"
     # inner_page.legend.click_policy="hide"
-    return inner_page ,model_lines
-
-
+    return inner_page, model_lines
