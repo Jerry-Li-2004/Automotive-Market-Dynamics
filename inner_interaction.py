@@ -206,9 +206,9 @@ def specification_power_values(brand_name=None):
     return find_best_car(car_brand_directory[brand_name]), car_brand_directory[brand_name][find_best_car_ID(car_brand_directory[brand_name])], average_performance
 
 
-def power_shield_setup(performance_values, visualization_title=None):
-    categories = ['Sales', 'Price (Low)',
-                  'Fuel Effiency', 'Horsepower', 'Top Speed']
+def power_shield_setup(performance_values, title=None):
+    categories = ['Sales', 'Price',
+                  'Fuel Efficiency', 'Horsepower', 'Speed']
 
     # oil cost: petrol, diesel, electric different costs
     # all categorical data are normalized
@@ -228,22 +228,31 @@ def power_shield_setup(performance_values, visualization_title=None):
     y = [v * np.sin(a) for v, a in zip(values, angles)]
 
     # Convert to polar coordinates for the outer edges
-    outer_x = [multiplier * np.cos(a) for a in angles]
-    outer_y = [multiplier * np.sin(a) for a in angles]
+    # outer_x = [multiplier * np.cos(a) for a in angles]
+    # outer_y = [multiplier * np.sin(a) for a in angles]
 
-    if (visualization_title == None):
+    visualization_title = ""
+    if (title == None):
         visualization_title = "Average Car Model Performance"
     else:
-        visualization_title = "Top Car Model Performance: " + visualization_title
+        visualization_title = "Top Car Model Performance: " + title
 
     p = figure(title=visualization_title, match_aspect=True,
                tools="", x_axis_type=None, y_axis_type=None, width=500, height=400)
     p.grid.grid_line_color = None
     p.title.text_font_size = '12pt'
     # add the circular plot
-    p.line(x, y, line_width=5)
-    p.line(outer_x, outer_y, line_width=1,
-           line_dash="dotted", line_color="gray")
+    if (title == None):
+        p.line(x, y, line_width=5, line_color="green")
+    else:
+        p.line(x, y, line_width=5)
+
+    for i in range(multiplier+1):
+        outer_x = [i * np.cos(a) for a in angles]
+        outer_y = [i * np.sin(a) for a in angles]
+        p.line(outer_x, outer_y, line_width=1,
+               line_dash="dotted", line_color="gray")
+
     p.circle(x, y, size=5)
 
     # add category labels
@@ -330,7 +339,14 @@ def brand_page_setup(target_brand):
 
 def info_box():
     help_button = HelpButton(tooltip=Tooltip(content=HTML("""
-    <b> formula for power shield </b>
+    <b> Formula for Radar Chart: <br> 
+        After data normalization, car models are evaluated based on 5 criteria:
+                                                          <br> 1. Sales
+                                                          <br> 2. Price (Lower price higher score)
+                                                          <br> 3. Fuel Efficiency
+                                                          <br> 4. Horsepower
+                                                          <br> 5. Speed
+    </b> 
     """), position="right"))
     return help_button
 
