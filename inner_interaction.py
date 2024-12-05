@@ -1,4 +1,9 @@
-from bokeh.models import Select, CustomJS, Button, Spacer
+from bokeh.io import curdoc
+from bokeh.models import Button
+from bokeh.io import show
+from bokeh.layouts import column
+from bokeh.models import Select, CustomJS, Button, Spacer, Div, HelpButton, Tooltip
+from bokeh.models.dom import HTML
 from bokeh.models import Div
 from bokeh.plotting import figure, show
 from bokeh.layouts import column, row
@@ -295,9 +300,18 @@ def brand_page_setup(target_brand):
     # vertical_line_with_cursor(inner_layer_sales_graph)
     # info_with_cursor(inner_layer_sales_graph)  # show information when hover
 
-    brand_page = column(row(top_performance_model, best_power_shield, average_power_shield), inner_layer_sales_graph,
+    brand_page = column(row(top_performance_model, info_box(), best_power_shield, average_power_shield), inner_layer_sales_graph,
                         row(model_selector(inner_layer_sales_graph, model_lines), year_slider(inner_layer_sales_graph)), sizing_mode="stretch_both")
     # show(brand_page)
     return brand_page
 
 # brand_page_setup('Audi')
+
+
+def info_box():
+    help_button = HelpButton(tooltip=Tooltip(content=HTML("""
+    <b> formula for power shield </b>
+    """), position="right"))
+    return help_button
+
+# show(column(extra_info()))
