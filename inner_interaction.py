@@ -89,9 +89,12 @@ def transition_page_set_up():
                         vauxhall_logo, volkswagen_logo),
                     # row(nissan_but,peugeot_but,toyota_but,vauxhall_but,volkswagen_but)
                     )
+    top_row = row(audi_logo, bmw_logo, ford_logo, kia_logo, mercedes_logo)
+    bottom_row = row(nissan_logo, peugeot_logo, toyota_logo,
+                     vauxhall_logo, volkswagen_logo)
     # show(layout)
 
-    return layout
+    return top_row, bottom_row
 
 
 def normalize_values(data):
