@@ -305,8 +305,6 @@ def brand_page_setup(target_brand):
         target_brand)
     inner_layer_predicted_price_graph, predicted_model_lines = predicted_price_graph_setup(
         target_brand)
-    # inner_layer_sales_graph.width = 250
-    # inner_layer_predicted_price_graph.width = 250
 
     # top model photo
     top_performance_model_html = get_top_performance_model_html(target_brand)
@@ -329,8 +327,14 @@ def brand_page_setup(target_brand):
     # vertical_line_with_cursor(inner_layer_sales_graph)
     # info_with_cursor(inner_layer_sales_graph)  # show information when hover
 
-    brand_page = row(column(row(logo, model_selector(inner_layer_sales_graph, model_lines), top_performance_model),
-                            row(column(inner_layer_sales_graph, year_slider(inner_layer_sales_graph))), sizing_mode="stretch_both"), column(info_box(), best_power_shield, average_power_shield))
+    # brand_page = row(column(row(logo, model_selector(inner_layer_sales_graph, model_lines), top_performance_model),
+    #                         row(column(inner_layer_sales_graph, year_slider(inner_layer_sales_graph))), sizing_mode="stretch_both"), column(info_box(), best_power_shield, average_power_shield))
+    logo_offset = Spacer(width=10)
+    row1 = row(column(Spacer(height=50, width=275), logo, Spacer(height=40, width=275), row(logo_offset, model_selector(
+        inner_layer_sales_graph, model_lines)), row(logo_offset, year_slider(inner_layer_sales_graph))), top_performance_model, best_power_shield)
+    row2 = row(inner_layer_sales_graph, Spacer(
+        width=55), average_power_shield)
+    brand_page = column(row1, row2)
     # show(brand_page)
     return brand_page
 

@@ -37,7 +37,7 @@ def year_slider(main_page):
     centered_slider = row(Spacer(width=90), time_slider,
                           Spacer(width=90))
     # main_page_layout = column(main_page, centered_slider, Spacer(height=20))
-    return centered_slider
+    return time_slider
 
 
 def brand_filter(main_page, filter_lines):

@@ -67,7 +67,6 @@ def get_brand_sales_data(brand):  # extract tip 10 sales of specific brand
     brand_sales = sales_df[sales_df['Maker'] == brand]
     year_columns = brand_sales.columns[2:]
     brand_sales['Total_Sales'] = brand_sales[year_columns].sum(axis=1)
-
     brand_sales = brand_sales.nlargest(10, 'Total_Sales')
 
     # print(brand_sales['Genmodel'])
@@ -177,7 +176,7 @@ def brand_sales_graph_setup(brand_name):
     source = ColumnDataSource(data)
 
     inner_page = figure(title=brand_name + "'s Model Sales Performance Trackers", x_axis_label='Year',
-                        y_axis_label='Sales', width=500, height=400)
+                        y_axis_label='Sales', width=775, height=400)
 
     colors = Category20[len(sales_data['Genmodel'])]
 
