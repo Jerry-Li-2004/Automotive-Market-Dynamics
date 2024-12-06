@@ -68,8 +68,12 @@ def main():
     vertical_line_with_cursor(filter_line_graph)
     info_with_cursor(filter_line_graph)  # show information when hover
 
-    filter_line_page = column(filter_line_graph,
-                              row(Spacer(width=100), main_page_year_slider(filter_line_graph), brand_filter(filter_line_graph, filter_line),  main_but, transition_but))
+    # filter_line_page = column(filter_line_graph,
+    #                           row(Spacer(width=100), main_page_year_slider(filter_line_graph), brand_filter(filter_line_graph, filter_line),  main_but, transition_but))
+    filter_line_page = row(
+        column(Spacer(height=20), filter_line_graph, row(Spacer(width=90),
+                                                         main_page_year_slider(filter_line_graph), Spacer(width=20), column(Spacer(height=20), brand_filter(filter_line_graph, filter_line)))), column(Spacer(width=20)),
+        column(Spacer(height=350), main_but, transition_but, Spacer(height=300)), sizing_mode='stretch_both')
     # ------------------------3. transition layer---------------------------#
     top_row, bottom_row = transition_page_set_up()
 

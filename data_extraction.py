@@ -137,7 +137,7 @@ def filter_line_page_setup():
     source = ColumnDataSource(data)
 
     filter_page = figure(title="Automotive Market Dynamics: Top 10 Sales Distribution and Trends", x_axis_label='Year',
-                         y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
+                         y_axis_label='Sales',  width=1250, height=750)
 
     colors = Category20[len(sales_data['Top_10_Brands'])]
 
