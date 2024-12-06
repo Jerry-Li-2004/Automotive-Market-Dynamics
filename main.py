@@ -69,7 +69,7 @@ def main():
     info_with_cursor(filter_line_graph)  # show information when hover
 
     filter_line_page = column(filter_line_graph,
-                              row(year_slider(filter_line_graph), brand_filter(filter_line_graph, filter_line),  main_but), Spacer(height=20))
+                              row(main_page_year_slider(filter_line_graph), brand_filter(filter_line_graph, filter_line),  main_but), Spacer(height=20))
     # ------------------------3. transition layer---------------------------#
     top_row, bottom_row = transition_page_set_up()
 
