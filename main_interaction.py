@@ -23,7 +23,7 @@ def info_with_cursor(main_page):  # show information when hover
 
 
 def year_slider(main_page):
-    time_slider = Slider(start=2001, end=2015,
+    time_slider = Slider(start=2001, end=2020,
                          value=2001, step=1, title="Year")
     callback = CustomJS(args=dict(main_page=main_page, time_slider=time_slider), code="""
         const year = time_slider.value;
@@ -55,7 +55,8 @@ def main_page_year_slider(main_page):
 def brand_filter(main_page, filter_lines):
     # Create a CheckboxGroup for brand selection
     brands = [item.label['value'] for item in main_page.legend.items]
-    checkbox_group = CheckboxGroup(labels=brands, active=[])
+    checkbox_group = CheckboxGroup(
+        labels=brands, active=[], sizing_mode='stretch_width', inline=True)
 
     # CustomJS to update visibility based on checkbox selection
     checkbox_callback = CustomJS(args=dict(lines=filter_lines, checkbox_group=checkbox_group), code="""

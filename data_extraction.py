@@ -113,7 +113,7 @@ def main_page_setup():
     # vline = Span(location=2020, dimension='height',
     #              line_color='Blue', line_width=2, end=1500000)
     # main_page.add_layout(vline)
-    main_page.line([2020, 2020], [-50000, 1500000],
+    main_page.line([2020, 2020], [-50000, 1700000],
                    line_width=2, line_color='Black')
 
     main_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
@@ -137,7 +137,7 @@ def filter_line_page_setup():
     source = ColumnDataSource(data)
 
     filter_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',
-                         y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
+                         y_axis_label='Sales', sizing_mode='stretch_both', width=1200)
 
     colors = Category20[len(sales_data['Top_10_Brands'])]
 
@@ -146,9 +146,11 @@ def filter_line_page_setup():
                                 color=color, source=source, legend_label=brand)
         filter_lines.append(line)
 
-    vline = Span(location=2020, dimension='height',
-                 line_color='Blue', line_width=2)
-    filter_page.add_layout(vline)
+    # vline = Span(location=2020, dimension='height',
+    #              line_color='Blue', line_width=2)
+    # filter_page.add_layout(vline)
+    filter_page.line([2020, 2020], [-5000, 350000],
+                     line_width=2, line_color='Black')
 
     filter_page.yaxis.formatter = NumeralTickFormatter(format="0,0")
     filter_page.title.text_font_size = '20pt'

@@ -69,7 +69,7 @@ def main():
     info_with_cursor(filter_line_graph)  # show information when hover
 
     filter_line_page = column(filter_line_graph,
-                              row(main_page_year_slider(filter_line_graph), brand_filter(filter_line_graph, filter_line),  main_but), Spacer(height=20))
+                              row(Spacer(width=100), main_page_year_slider(filter_line_graph), brand_filter(filter_line_graph, filter_line),  main_but, transition_but))
     # ------------------------3. transition layer---------------------------#
     top_row, bottom_row = transition_page_set_up()
 
@@ -113,12 +113,10 @@ def main():
     filter_but_callback = CustomJS(args=dict(main_page=main_page, ford_inner_page=ford_inner_page, filter_page=filter_line_page, main=main_but, filter=filter_but, transition_page=transition_page, transition_but=transition_but), code="""
         main_page.visible = false;
         main.visible = true;
-        filter_page.visible = false;
-        filter.visible = true;
-        transition_page.visible = false;
-        transition_but.visible = true;
         filter_page.visible = true;
         filter.visible = false;
+        transition_page.visible = false;
+        transition_but.visible = true;
     """)
     # inner but_callback
     transition_but_callback = CustomJS(args=dict(
