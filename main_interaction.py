@@ -34,9 +34,21 @@ def year_slider(main_page):
                         """)
 
     time_slider.js_on_change('value', callback)
-    centered_slider = row(Spacer(width=90), time_slider,
-                          Spacer(width=90))
-    # main_page_layout = column(main_page, centered_slider, Spacer(height=20))
+    return time_slider
+
+
+def main_page_year_slider(main_page):
+    time_slider = Slider(start=2001, end=2020,
+                         value=2001, step=1, title="Year")
+    callback = CustomJS(args=dict(main_page=main_page, time_slider=time_slider), code="""
+        const year = time_slider.value;
+        const start = year;                 // Calculate start of x_range
+        const end = start + 5;              // Calculate end of x_range
+        main_page.x_range.start = start;
+        main_page.x_range.end = end; 
+                        """)
+
+    time_slider.js_on_change('value', callback)
     return time_slider
 
 

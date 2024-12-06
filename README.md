@@ -7,13 +7,6 @@ window: .\virtual_environment\Scripts\activate
 mac: source virtual_environment/Scripts/activate
 ```
 
-`Run file:`
-
-```python
-window: python .\main.py
-mac: python main.py
-```
-
 `setup env`
 
 ```python
@@ -25,4 +18,11 @@ mac: pip install -r requirement.txt
 
 ```python
 pip freeze > requirement.txt
+```
+
+`Run file:`
+
+```python
+window: python .\main.py
+mac: python main.py
 ```

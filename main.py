@@ -6,15 +6,15 @@ from bokeh import events
 
 
 from data_extraction import main_page_setup, filter_line_page_setup, brand_sales_graph_setup
-from main_interaction import vertical_line_with_cursor, info_with_cursor, year_slider, brand_filter
+from main_interaction import vertical_line_with_cursor, info_with_cursor, main_page_year_slider, year_slider, brand_filter
 from inner_interaction import model_selector, transition_page_set_up, power_shield_setup, specification_power_values, brand_page_setup
 
 
 def main():
     # --------------------buttons setup----------------------#
-    transition_but = Button(label="Transition Layer", button_type="success",
+    transition_but = Button(label="Select Car Brand", button_type="success",
                             width=100, height=30)
-    filter_but = Button(label="filter Layer", button_type="success",
+    filter_but = Button(label="Filter Mode", button_type="success",
                         width=100, height=30)
 
     # audi testing button (currently the background image is ferrari logo)
@@ -51,14 +51,14 @@ def main():
 
     main_but = Button(label="Main Layer", button_type="success",
                       width=100, height=30)
-
     # main page setup
     main_page = row(
         # Ensure the main page stretches
-        column(main_page, row(year_slider(main_page), filter_but, transition_but),
-               Spacer(height=20), sizing_mode='stretch_both'),
+        column(Spacer(height=20), main_page, row(Spacer(width=90),
+               main_page_year_slider(main_page), Spacer(width=90))),
         # Fix the width of the logo column
-        column(Spacer(height=20), width=200)
+        column(Spacer(width=20)),
+        column(Spacer(height=350), filter_but, transition_but, Spacer(height=300)), sizing_mode='stretch_both'
     )
 
     # ------------------------2. filter layer-------------------------------#
@@ -281,7 +281,7 @@ def main():
     # final_layout = layout([main_page, ford_inner_page, filter_line_page, transition_page, audi_inner_page, bmw_inner_page],
     #                       sizing_mode='stretch_both')
     final_layout = layout([main_page, ford_inner_page, filter_line_page, transition_page, audi_inner_page, bmw_inner_page, kia_inner_page,
-                          mercedes_inner_page, nissan_inner_page, peugeot_inner_page, toyota_inner_page, vauxhall_inner_page, volkswagen_inner_page], sizing_mode='stretch_both')
+                           mercedes_inner_page, nissan_inner_page, peugeot_inner_page, toyota_inner_page, vauxhall_inner_page, volkswagen_inner_page], sizing_mode='stretch_both')
     curdoc().add_root(final_layout)
 
     output_file("automotive_market_dynamics.html")
