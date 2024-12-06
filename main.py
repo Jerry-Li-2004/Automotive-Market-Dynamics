@@ -49,7 +49,7 @@ def main():
     vertical_line_with_cursor(main_page)  # show vertical lines with cursor
     info_with_cursor(main_page)  # show information when hover
 
-    main_but = Button(label="Main Layer", button_type="success",
+    main_but = Button(label="Main Page", button_type="success",
                       width=100, height=30)
     # main page setup
     main_page = row(
@@ -74,13 +74,15 @@ def main():
     top_row, bottom_row = transition_page_set_up()
 
     transition_page_title = Div(
-        text="<h1 style='font-size: 80px; text-align: center;'>Select Brand</h1>", height=200)
+        text="<h1 style='font-size: 80px; text-align: center;'>Select Car Brand</h1>", height=200)
 
     button_top_row = row(audi_but, bmw_but, ford_but, kia_but, mercedes_but)
     button_bottom_row = row(nissan_but, peugeot_but,
                             toyota_but, vauxhall_but, volkswagen_but)
-    transition_page = column(row(Spacer(width=400), transition_page_title, Spacer(width=200), column(Spacer(height=50), main_but, filter_but)),
+    transition_page = column(row(Spacer(width=25), transition_page_title, Spacer(width=625), column(Spacer(height=75), main_but, filter_but)),
                              top_row, button_top_row, bottom_row, button_bottom_row)
+
+    # , Spacer(height=50), row(Spacer(width=500), main_but, filter_but, Spacer(width=500))
 
     # ------------------------4. Brand layer---------------------------#
 
