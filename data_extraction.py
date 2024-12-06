@@ -103,7 +103,7 @@ def main_page_setup():
 
     source = ColumnDataSource(data)
 
-    main_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',
+    main_page = figure(title="Automotive Market Dynamics: Top 10 Sales Distribution and Trends", x_axis_label='Year',
                        y_axis_label='Sales', width=1250, height=750)
 
     colors = Category20[len(sales_data['Top_10_Brands'])]
@@ -136,8 +136,8 @@ def filter_line_page_setup():
 
     source = ColumnDataSource(data)
 
-    filter_page = figure(title="Automotive Market Dynamics Visualization", x_axis_label='Year',
-                         y_axis_label='Sales', sizing_mode='stretch_both', width=1200)
+    filter_page = figure(title="Automotive Market Dynamics: Top 10 Sales Distribution and Trends", x_axis_label='Year',
+                         y_axis_label='Sales', sizing_mode='stretch_height', width=1200)
 
     colors = Category20[len(sales_data['Top_10_Brands'])]
 

@@ -86,9 +86,8 @@ def main():
 
     # ------------------------4. Brand layer---------------------------#
 
-    # audi_inner_page = row(brand_page_setup('Audi'), transition_but)
     audi_inner_page = row(brand_page_setup(
-        'Audi'), Spacer(width=20), transition_but)
+        'Audi'), transition_but)
     bmw_inner_page = row(brand_page_setup('Bmw'), transition_but)
     ford_inner_page = row(brand_page_setup('Ford'), transition_but)
     kia_inner_page = row(brand_page_setup('Kia'), transition_but)

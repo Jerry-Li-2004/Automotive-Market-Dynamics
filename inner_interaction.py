@@ -331,7 +331,7 @@ def brand_page_setup(target_brand):
     #                         row(column(inner_layer_sales_graph, year_slider(inner_layer_sales_graph))), sizing_mode="stretch_both"), column(info_box(), best_power_shield, average_power_shield))
     logo_offset = Spacer(width=10)
     row1 = row(column(Spacer(height=50, width=275), logo, Spacer(height=40, width=275), row(logo_offset, model_selector(
-        inner_layer_sales_graph, model_lines)), row(logo_offset, year_slider(inner_layer_sales_graph))), top_performance_model, best_power_shield)
+        inner_layer_sales_graph, model_lines), column(Spacer(height=16), info_box())), row(logo_offset, year_slider(inner_layer_sales_graph))), top_performance_model, best_power_shield)
     row2 = row(inner_layer_sales_graph, Spacer(
         width=55), average_power_shield)
     brand_page = column(row1, row2)
@@ -343,7 +343,7 @@ def brand_page_setup(target_brand):
 
 def info_box():
     help_button = HelpButton(tooltip=Tooltip(content=HTML("""
-    <b> Formula for Radar Chart: <br> 
+    <b> Formula for Performance Radar Chart: <br> 
         After data normalization, car models are evaluated based on 5 criteria:
                                                           <br> 1. Sales
                                                           <br> 2. Price (Lower price higher score)
